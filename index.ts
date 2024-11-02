@@ -125,6 +125,52 @@ app.post('/posts', async (req: Request, res: Response) => {
   }
 });
 
+// POST route for adding account
+app.post('/signin', async (req: Request, res: Response) => {
+  const {
+    userEmail,
+    provider,
+    creationDate,
+    signInDate,
+    userID,
+    expirationDate
+  } = req.body;
+
+  // Validate the required fields
+  if (!userEmail || !provider || !creationDate || !signInDate || !userID) {
+    return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
+  }
+
+  try {
+    // Prepare the data object
+    const researchData = {
+      userEmail,
+      provider,
+      creationDate,
+      signInDate,
+      userID,
+      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)), // Convert to Firestore Timestamp
+
+      createdAt: admin.firestore.FieldValue.serverTimestamp(), // Optional: add a timestamp
+    };
+
+    // Store the data in Firestore
+    const docRef = db.collection('accounts').doc(); // Creates a new document
+    await docRef.set(researchData); // Store the request body in the new document
+    console.log('Account data saved to Firestore');
+
+    // Respond back to the user
+    res.status(201).json({
+      message: 'Account data added successfully',
+      data: researchData,
+      id: docRef.id // Return the unique document ID
+    });
+  } catch (error) {
+    console.error('Error saving research data to Firestore:', error);
+    res.status(500).send('Error saving research data');
+  }
+});
+
 
 // Start the server
 app.listen(port, () => {
