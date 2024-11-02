@@ -125,52 +125,47 @@ app.post('/posts', async (req: Request, res: Response) => {
   }
 });
 
-// POST route for adding account
-app.post('/signin', async (req: Request, res: Response) => {
-  const {
-    userEmail,
-    provider,
-    creationDate,
-    signInDate,
-    userID,
-    expirationDate
-  } = req.body;
+// Define types for incoming request bodies
+interface AuthRequestBody {
+  email: string;
+  password: string;
+}
 
-  // Validate the required fields
-  if (!userEmail || !provider || !creationDate || !signInDate || !userID) {
-    return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
+// Registration route
+app.post('/register', async (req: Request<{}, {}, AuthRequestBody>, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if the user already exists
+    await admin.auth().getUserByEmail(email);
+    return res.status(400).json({ error: 'Account already exists.' });
+  } catch (error: any) {
+    if (error.code !== 'auth/user-not-found') {
+      return res.status(500).json({ error: error.message });
+    }
   }
 
   try {
-    // Prepare the data object
-    const researchData = {
-      userEmail,
-      provider,
-      creationDate,
-      signInDate,
-      userID,
-      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)), // Convert to Firestore Timestamp
-
-      createdAt: admin.firestore.FieldValue.serverTimestamp(), // Optional: add a timestamp
-    };
-
-    // Store the data in Firestore
-    const docRef = db.collection('accounts').doc(); // Creates a new document
-    await docRef.set(researchData); // Store the request body in the new document
-    console.log('Account data saved to Firestore');
-
-    // Respond back to the user
-    res.status(201).json({
-      message: 'Account data added successfully',
-      data: researchData,
-      id: docRef.id // Return the unique document ID
-    });
-  } catch (error) {
-    console.error('Error saving research data to Firestore:', error);
-    res.status(500).send('Error saving research data');
+    // Create a new user
+    const user = await admin.auth().createUser({ email, password });
+    res.status(201).json({ message: 'Account created successfully', user });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
 });
 
+// Sign-in route
+app.post('/login', async (req: Request<{}, {}, AuthRequestBody>, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    // Verify the email exists (password verification to be done client-side)
+    await admin.auth().getUserByEmail(email);
+    res.status(200).json({ message: 'Login successful' });
+  } catch (error: any) {
+    res.status(404).json({ error: 'No account found with this email.' });
+  }
+});
 
 // Start the server
 app.listen(port, () => {
