@@ -1,0 +1,30 @@
+/* Header.css */
+
+.header {
+  background-color: #343a40;
+  color: #ffffff;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.header nav a {
+  color: #5bc0de;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+.header nav a:hover {
+  color: #ffffff;
+}
+
+.header button {
+  margin-left: 10px;
+}
