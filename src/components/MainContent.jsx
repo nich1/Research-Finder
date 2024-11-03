@@ -5,10 +5,10 @@ import './MainContent.css';
 const MainContent = () => {
   return (
     <main className="main-content">
-      {/* Hero Section */}
-      <section className="hero">
-        <h1>Open Positions </h1>
-        <p>Connecting researchers with the perfect assistant.</p>
+      {/* open-positions-container  Section */}
+      <section className="open-positions-container ">
+      <h2>Open Positions</h2>
+      <p>Connecting researchers with the perfect assistant.</p>
         <button className="cta-button">Get Started</button>
       </section>
 
