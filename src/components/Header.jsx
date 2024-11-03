@@ -4,12 +4,19 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <header className="header">
-      <h1>Open Research Pojects </h1>
+    <header className="centered-header">
+      <h1>Welcome to Research Finder</h1>
       <nav>
-        <Link to="/">Home</Link>
+        <Link to="/" className="nav-link">Home</Link>
         <Link to="/signin">
-          <button style={{ marginLeft: '10px' }}>Sign In</button>
+          <button className="nav-button" style={{ color: 'blue', marginLeft: '10px' }}>
+            Sign In
+          </button>
+        </Link>
+        <Link to="/register">
+          <button className="nav-button" style={{ color: 'blue', marginLeft: '10px' }}>
+            Register
+          </button>
         </Link>
       </nav>
     </header>

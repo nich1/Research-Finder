@@ -14,11 +14,15 @@ function App() {
       <div className="App">
         <Header />
         <Routes>
-          <Route path="/" element={<MainContent />} />
-          <Route path="/signin" element={<Auth />} /> {/* New route for sign-in page */}
+          <Route path="/" element={
+            <div className="main-container">
+              <MainContent />
+              <h1>Research Related Jobs</h1>
+              <Posts />
+            </div>
+          } />
+          <Route path="/signin" element={<Auth />} /> {/* Sign-in page route */}
         </Routes>
-        <h1>Research Related Jobs</h1>
-        <Posts />
         <Footer />
       </div>
     </Router>

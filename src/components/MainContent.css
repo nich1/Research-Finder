@@ -1,6 +1,10 @@
 /* MainContent.css */
 
 .main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
   width: 80%;
   max-width: 900px;
   margin-top: 20px;
@@ -54,26 +58,30 @@
 }
 
 .profile-cards {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+  background-color: #ffffff; /* White background for readability */
+  color: #333333; /* Dark gray text for better contrast */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-bottom: 20px;
 }
 
 .profile-card {
-  background-color: #f8f9fa;
+  background-color: #ffffff; /* White background for readability */
+  color: #333333; /* Dark gray text for better contrast */
   padding: 20px;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  width: 250px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-bottom: 20px;
 }
 
 .how-it-works {
-  background-color: #e9ecef;
-  padding: 30px 20px;
-  margin-top: 30px;
+  background-color: #f0f8ff; /* Very light blue background for contrast */
+  color: #333333;
+  padding: 20px;
   border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .cta {

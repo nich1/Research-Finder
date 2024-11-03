@@ -1,0 +1,13 @@
+.Auth{
+    color: blue; /* Change to the same color as the "Home" link */
+    background-color: transparent; /* Remove any background color */
+    border: none; /* Remove border if any */
+    text-decoration: none; /* To make it look like a link */
+    font-size: 16px; /* Match the font size of "Home" */
+    cursor: pointer;
+  }
+  
+  /* Add a hover effect if needed */
+  .sign-in:hover {
+    text-decoration: underline;
+  }

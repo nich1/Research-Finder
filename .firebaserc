@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "research-finder-8833e"
-  }
+    "default": "research-finder-1000"
+  },
+  "targets": {},
+  "etags": {}
 }

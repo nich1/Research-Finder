@@ -1,9 +1,11 @@
 /* Posts.css */
 .posts {
+  background-color: #ffffff; /* White background for readability */
+  color: #333333; /* Dark gray text for better contrast */
   padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-bottom: 20px;
 }
 
 .posts h2 {
