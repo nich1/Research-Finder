@@ -2,6 +2,7 @@ import express from 'express';
 import researcherRoutes from './routes/researcherRoutes';
 import assistantRoutes from './routes/assistantRoutes';
 import postRoutes from './routes/postRoutes';
+import applicationRoutes from './routes/applicationRoutes';
 import accountRoutes from './routes/accountRoutes';
 import searchRoutes from './routes/searchRoutes';
 
