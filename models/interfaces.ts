@@ -28,3 +28,15 @@ export interface Researcher {
   password: string;
   posts: string[];
 }
+
+export interface Assistant {
+  firstName: string;
+  lastName: string;
+  age: number;
+  sex: string;
+  bio: string;
+  email: string;
+  password: string;
+  workType: WorkType;
+  applications: string[];
+}
