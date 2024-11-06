@@ -53,7 +53,6 @@ interface Researcher {
   email: string;
   password: string;
   posts: string[]; // List of post IDs
-  researcherId: string;
 }
 
 // Route to create a new researcher
@@ -83,7 +82,6 @@ app.post('/researcher', async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       posts: [], // Initialize posts as an empty array if not provided
-      researcherId
     };
 
     // Save the researcher to Firestore
