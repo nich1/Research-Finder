@@ -1,6 +1,7 @@
 // routes/searchRoutes.ts
 import express, { Request, Response } from 'express';
-import {admin, db } from '../config/firebase';
+import { db } from '../config/firebase';
+import { Post, WorkType } from '../models/interfaces';
 
 
 const router = express.Router();
