@@ -14,6 +14,12 @@ router.post('/researcher', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
+    // Check if email is already in use
+    const existingAssistant = await db.collection('researchers').where('email', '==', email).get();
+    if (!existingAssistant.empty) {
+      return res.status(400).json({ error: 'Email is already in use' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const researcherRef = db.collection('researchers').doc();
     const researcherId = researcherRef.id;
