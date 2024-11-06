@@ -1,7 +1,14 @@
-import express, { Request, Response } from 'express';
-import admin from 'firebase-admin'; // Import Firebase Admin SDK
-import bcrypt from 'bcrypt';
+// index.ts
+import express from 'express';
+import dotenv from 'dotenv';
+import firebaseAdmin from './firebase'; // Import firebase configuration
+import researcherRoutes from './routes/researcherRoutes';
+import postRoutes from './routes/postRoutes';
+import accountRoutes from './routes/accountRoutes';
+import searchRoutes from './routes/searchRoutes';
 
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,277 +16,17 @@ const port = process.env.PORT || 3000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Initialize Firebase Admin SDK using environment variables
-admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: (process.env.FIREBASE_PRIVATE_KEY as string), // Handle new line character
-  }),
-  databaseURL: 'https://research-finder-1000.firebaseio.com',
-});
+// Initialize Firebase (firebase.ts already does this)
 
-// Firestore database instance
-const db = admin.firestore();
-
-enum WorkType {
-  Remote = 'remote',
-  Online = 'online',
-  Hybrid = 'hybrid',
-}
-
-
-// Define types for posts and researchers
-interface Post {
-  researcherID: string;
-  researcherName: string;
-  title: string;
-  body: string;
-  organization: string;
-  compensation: string;
-  approvalMessage: string;
-  workType: WorkType;
-  approvedUsers: string[];
-  expirationDate: admin.firestore.Timestamp;
-  createdAt: admin.firestore.FieldValue;
-}
-
-interface Researcher {
-  firstName: string;
-  lastName: string;
-  age: number;
-  sex: string;
-  bio: string;
-  email: string;
-  password: string;
-  posts: string[]; // List of post IDs
-}
-
-// Route to create a new researcher
-app.post('/researcher', async (req: Request, res: Response) => {
-  try {
-    const { firstName, lastName, sex, age, bio, email, password } = req.body;
-
-    // Validate required fields
-    if (!firstName || !lastName || !sex || !bio || !email || !password) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Generate a new researcher document with an auto-generated ID
-    const researcherRef = db.collection('researchers').doc();
-    const researcherId = researcherRef.id;
-
-    // Create a new researcher object
-    const newResearcher: Researcher = {
-      firstName,
-      lastName,
-      age,
-      sex,
-      bio,
-      email,
-      password: hashedPassword,
-      posts: [], // Initialize posts as an empty array if not provided
-    };
-
-    // Save the researcher to Firestore
-    await researcherRef.set(newResearcher);
-
-    res.status(201).json({ message: 'Researcher created successfully', researcherId });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to create researcher' });
-  }
-});
-
-// DELETE route to delete a researcher by ID
-app.delete('/researcher/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  try {
-    // Check if the researcher exists
-    const researcherRef = db.collection('researchers').doc(id);
-    const researcherDoc = await researcherRef.get();
-
-    if (!researcherDoc.exists) {
-      return res.status(404).json({ error: 'Researcher not found' });
-    }
-
-    // Delete the researcher document
-    await researcherRef.delete();
-
-    res.status(200).json({ message: 'Researcher deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting researcher:', error);
-    res.status(500).json({ error: 'Failed to delete researcher' });
-  }
-});
-
-
-
-// GET request to fetch all posts
-app.get('/posts', async (req: Request, res: Response) => {
-  try {
-    const postsCollection = db.collection('posts');
-    const snapshot = await postsCollection.get();
-    
-    // Map over the documents and extract data
-    const posts = snapshot.docs.map(doc => ({
-      id: doc.id, // Include the document ID
-      ...doc.data() // Spread the document data
-    }));
-
-    res.json(posts); // Return the posts as an array in JSON format
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    res.status(500).json({ error: 'Failed to fetch posts' });
-  }
-});
-
-// POST route for adding research data
-app.post('/researcher/:researcherID/posts', async (req: Request, res: Response) => {
-  const { researcherID } = req.params;  // Retrieve researcherID from the URL parameters
-  const {
-    title,
-    body,
-    organization,
-    compensation,
-    workType,
-    approvalMessage,
-    expirationDate,
-    approvedUsers,
-  } = req.body;
-
-  // Validate the required fields
-  if (!workType || !title || !body || !organization || !compensation || !approvalMessage || !Array.isArray(approvedUsers)) {
-    return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
-  }
-
-  try {
-    // Verify if researcherID exists in the 'researchers' collection
-    const researcherRef = db.collection('researchers').doc(researcherID);
-    const researcherDoc = await researcherRef.get();
-
-    if (!researcherDoc.exists) {
-      return res.status(404).json({ message: 'Researcher ID not found in the researchers collection.' });
-    }
-
-    // Prepare the data object
-    const researchData = {
-      researcherID,  // This can still be included in the data for Firestore if needed
-      researcherName: `${researcherDoc.data()?.firstName} ${researcherDoc.data()?.lastName}`,  // Retrieved from Firestore
-      title,
-      body,
-      organization,
-      compensation,
-      approvalMessage,
-      workType,
-      approvedUsers,
-      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)), // Convert to Firestore Timestamp
-      createdAt: admin.firestore.FieldValue.serverTimestamp(), // Optional: add a timestamp
-    };
-
-    // Store the data in Firestore
-    const docRef = db.collection('posts').doc(); // Creates a new document
-    await docRef.set(researchData);
-
-    // Add the post reference to the researcher's posts array
-    await researcherRef.update({
-      posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
-    });
-
-    res.status(201).json({
-      message: 'Research data added successfully',
-      data: researchData,
-      id: docRef.id,  // Return the unique document ID
-    });
-  } catch (error) {
-    console.error('Error saving research data to Firestore:', error);
-    res.status(500).send('Error saving research data');
-  }
-});
-
-// POST route for adding account
-app.post('/signin', async (req: Request, res: Response) => {
-  const {
-    userEmail,
-    provider,
-    creationDate,
-    signInDate,
-    userID,
-    expirationDate
-  } = req.body;
-
-  // Validate the required fields
-  if (!userEmail || !provider || !creationDate || !signInDate || !userID) {
-    return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
-  }
-
-  try {
-    // Prepare the data object
-    const researchData = {
-      userEmail,
-      provider,
-      creationDate,
-      signInDate,
-      userID,
-      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)), // Convert to Firestore Timestamp
-
-      createdAt: admin.firestore.FieldValue.serverTimestamp(), // Optional: add a timestamp
-    };
-
-    // Store the data in Firestore
-    const docRef = db.collection('accounts').doc(); // Creates a new document
-    await docRef.set(researchData); // Store the request body in the new document
-    console.log('Account data saved to Firestore');
-
-    // Respond back to the user
-    res.status(201).json({
-      message: 'Account data added successfully',
-      data: researchData,
-      id: docRef.id // Return the unique document ID
-    });
-  } catch (error) {
-    console.error('Error saving research data to Firestore:', error);
-    res.status(500).send('Error saving research data');
-  }
-});
-
-// Route to search for posts by title, organization, or keywords in body
-app.get('/search/posts', async (req: Request, res: Response) => {
-  const searchString = req.query.q as string;
-
-  if (!searchString) {
-    return res.status(400).json({ message: 'Search string is required' });
-  }
-
-  try {
-    const postsRef = db.collection('posts');
-    const snapshot = await postsRef.get();
-
-    // Filter posts by title, organization, or keywords in body
-    const filteredPosts = snapshot.docs
-      .map(doc => ({ id: doc.id, ...doc.data() })) // Get the post data
-      .filter(post => 
-        post.title.toLowerCase().includes(searchString.toLowerCase()) ||
-        post.organization.toLowerCase().includes(searchString.toLowerCase()) ||
-        post.body.toLowerCase().includes(searchString.toLowerCase())
-      );
-
-    res.status(200).json(filteredPosts);
-  } catch (error) {
-    console.error('Error searching posts:', error);
-    res.status(500).json({ error: 'Failed to search posts' });
-  }
-});
-
-
-
-
+// Use route files
+app.use('/researchers', researcherRoutes);
+app.use('/posts', postRoutes);
+app.use('/accounts', accountRoutes);
+app.use('/search', searchRoutes);
 
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+export default app;
