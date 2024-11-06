@@ -136,6 +136,14 @@ app.post('/posts', async (req: Request, res: Response) => {
   }
 
   try {
+    // Verify if researcherID exists in the 'researchers' collection
+    const researcherRef = db.collection('researchers').doc(researcherID);
+    const researcherDoc = await researcherRef.get();
+
+    if (!researcherDoc.exists) {
+      return res.status(404).json({ message: 'Researcher ID not found in the researchers collection.' });
+    }
+
     // Prepare the data object
     const researchData = {
       researcherID,
@@ -148,7 +156,6 @@ app.post('/posts', async (req: Request, res: Response) => {
       workType,
       approvedUsers,
       expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)), // Convert to Firestore Timestamp
-
       createdAt: admin.firestore.FieldValue.serverTimestamp(), // Optional: add a timestamp
     };
 
@@ -158,7 +165,6 @@ app.post('/posts', async (req: Request, res: Response) => {
     console.log('Research data saved to Firestore');
 
     // Add the post reference to the researcher's posts array
-    const researcherRef = db.collection('researchers').doc(researcherID);
     await researcherRef.update({
       posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
     });
