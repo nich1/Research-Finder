@@ -139,10 +139,9 @@ app.get('/posts', async (req: Request, res: Response) => {
 });
 
 // POST route for adding research data
-app.post('/posts', async (req: Request, res: Response) => {
+app.post('/researcher/:researcherID/posts', async (req: Request, res: Response) => {
+  const { researcherID } = req.params;  // Retrieve researcherID from the URL parameters
   const {
-    researcherID,
-    researcherName,
     title,
     body,
     organization,
@@ -150,11 +149,11 @@ app.post('/posts', async (req: Request, res: Response) => {
     workType,
     approvalMessage,
     expirationDate,
-    approvedUsers
+    approvedUsers,
   } = req.body;
 
   // Validate the required fields
-  if (!workType || !researcherID || !researcherName || !title || !body || !organization || !compensation || !approvalMessage || !Array.isArray(approvedUsers)) {
+  if (!workType || !title || !body || !organization || !compensation || !approvalMessage || !Array.isArray(approvedUsers)) {
     return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
   }
 
@@ -169,8 +168,8 @@ app.post('/posts', async (req: Request, res: Response) => {
 
     // Prepare the data object
     const researchData = {
-      researcherID,
-      researcherName,
+      researcherID,  // This can still be included in the data for Firestore if needed
+      researcherName: `${researcherDoc.data()?.firstName} ${researcherDoc.data()?.lastName}`,  // Retrieved from Firestore
       title,
       body,
       organization,
@@ -184,19 +183,17 @@ app.post('/posts', async (req: Request, res: Response) => {
 
     // Store the data in Firestore
     const docRef = db.collection('posts').doc(); // Creates a new document
-    await docRef.set(researchData); // Store the request body in the new document
-    console.log('Research data saved to Firestore');
+    await docRef.set(researchData);
 
     // Add the post reference to the researcher's posts array
     await researcherRef.update({
       posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
     });
 
-    // Respond back to the user
     res.status(201).json({
       message: 'Research data added successfully',
       data: researchData,
-      id: docRef.id // Return the unique document ID
+      id: docRef.id,  // Return the unique document ID
     });
   } catch (error) {
     console.error('Error saving research data to Firestore:', error);
