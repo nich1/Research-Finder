@@ -45,3 +45,11 @@ export interface Assistant {
   password: string;
   workType: WorkType;
 }
+
+export interface Application {
+  assistantID: string;
+  postID: string;
+  status: Status;
+  message: string;
+  submittedAt: FirebaseFirestore.Timestamp;
+}

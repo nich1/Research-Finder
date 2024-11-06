@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
-import { db } from '../config/firebase';
-import { Status } from '../models/interfaces';
+import { admin, db } from '../config/firebase';
+import { Application, Status } from '../models/interfaces';
+import { App } from 'firebase-admin/app';
 
 
 const router = express.Router();
@@ -33,13 +34,12 @@ router.post('/applications', async (req: Request, res: Response) => {
     const applicationRef = db.collection('Applications').doc();
     const applicationId = applicationRef.id;
 
-    const newApplication = {
-      applicationId,
-      assistantId,
-      postId,
-      status: Status.Undecided,
-      submittedAt: new Date().toISOString(),
-      message: message || "",  // Optional message field
+    const newApplication : Application = {
+        postID,
+        assistantID,
+        message,
+        status: Status.Undecided,
+        submittedAt: admin.firestore.FieldValue.serverTimestamp()
     };
 
     // Save the new application in the Applications collection
