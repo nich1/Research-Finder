@@ -45,4 +45,19 @@ router.delete('/researcher/:id', async (req: Request, res: Response) => {
 
   try {
     const researcherRef = db.collection('researchers').doc(id);
-  
+    const researcherDoc = await researcherRef.get();
+
+    if (!researcherDoc.exists) {
+      return res.status(404).json({ error: 'Researcher not found' });
+    }
+
+    await researcherRef.delete();
+
+    res.status(200).json({ message: 'Researcher deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting researcher:', error);
+    res.status(500).json({ error: 'Failed to delete researcher' });
+  }
+});
+
+export default router;

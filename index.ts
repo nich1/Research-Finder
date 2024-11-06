@@ -1,14 +1,11 @@
 // index.ts
 import express from 'express';
-import dotenv from 'dotenv';
 import firebaseAdmin from './firebase'; // Import firebase configuration
 import researcherRoutes from './routes/researcherRoutes';
 import postRoutes from './routes/postRoutes';
 import accountRoutes from './routes/accountRoutes';
 import searchRoutes from './routes/searchRoutes';
 
-// Load environment variables from .env file
-dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
