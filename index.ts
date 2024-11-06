@@ -20,6 +20,7 @@ app.use('', assistantRoutes);
 app.use('', postRoutes);
 app.use('', accountRoutes);
 app.use('', searchRoutes);
+app.use('', applicationRoutes);
 
 // Start the server
 app.listen(port, () => {

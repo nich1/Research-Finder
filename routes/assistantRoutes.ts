@@ -38,7 +38,6 @@ router.post('/assistant', async (req: Request, res: Response) => {
       email,
       workType,
       password: hashedPassword,
-      applications: [],
     };
 
     await assistantRef.set(newAssistant);

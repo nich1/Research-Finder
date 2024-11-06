@@ -4,6 +4,12 @@ export enum WorkType {
   Hybrid = 'hybrid',
 }
 
+export enum Status {
+  Undecided = "undecided",
+  Approved = "approved",
+  Declined = "declined",
+}
+
 export interface Post {
   researcherID: string;
   researcherName: string;
@@ -38,5 +44,4 @@ export interface Assistant {
   email: string;
   password: string;
   workType: WorkType;
-  applications: string[];
 }
