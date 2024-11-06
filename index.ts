@@ -1,6 +1,5 @@
 // index.ts
 import express from 'express';
-import firebaseAdmin from './firebase'; // Import firebase configuration
 import researcherRoutes from './routes/researcherRoutes';
 import postRoutes from './routes/postRoutes';
 import accountRoutes from './routes/accountRoutes';
