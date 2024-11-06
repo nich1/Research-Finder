@@ -16,10 +16,10 @@ app.use(express.json());
 // Initialize Firebase (firebase.ts already does this)
 
 // Use route files
-app.use('/researchers', researcherRoutes);
-app.use('/posts', postRoutes);
-app.use('/accounts', accountRoutes);
-app.use('/search', searchRoutes);
+app.use('', researcherRoutes);
+app.use('', postRoutes);
+app.use('', accountRoutes);
+app.use('', searchRoutes);
 
 // Start the server
 app.listen(port, () => {
