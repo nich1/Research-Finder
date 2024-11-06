@@ -22,7 +22,8 @@ router.get('/search/posts', async (req: Request, res: Response) => {
       .filter(post =>
         post.title.toLowerCase().includes(searchString.toLowerCase()) ||
         post.organization.toLowerCase().includes(searchString.toLowerCase()) ||
-        post.body.toLowerCase().includes(searchString.toLowerCase())
+        post.body.toLowerCase().includes(searchString.toLowerCase()) ||
+        post.workType.toLowerCase().includes(searchString.toLowerCase())
       );
 
     res.status(200).json(filteredPosts);
