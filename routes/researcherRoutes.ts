@@ -1,4 +1,3 @@
-// routes/researcherRoutes.ts
 import express, { Request, Response } from 'express';
 import { db } from '../config/firebase';
 import bcrypt from 'bcrypt';

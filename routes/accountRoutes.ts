@@ -1,4 +1,3 @@
-// routes/accountRoutes.ts
 import express, { Request, Response } from 'express';
 import { admin, db } from '../config/firebase';
 

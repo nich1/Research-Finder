@@ -1,4 +1,3 @@
-// routes/postRoutes.ts
 import express, { Request, Response } from 'express';
 import { admin, db } from '../config/firebase';
 import { Post, WorkType } from '../models/interfaces';

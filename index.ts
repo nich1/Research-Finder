@@ -1,4 +1,3 @@
-// index.ts
 import express from 'express';
 import researcherRoutes from './routes/researcherRoutes';
 import postRoutes from './routes/postRoutes';

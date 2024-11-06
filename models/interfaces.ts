@@ -1,5 +1,3 @@
-// models/interfaces.ts
-
 export enum WorkType {
   Remote = 'remote',
   Online = 'online',

@@ -1,4 +1,3 @@
-// routes/searchRoutes.ts
 import express, { Request, Response } from 'express';
 import { db } from '../config/firebase';
 import { Post, WorkType } from '../models/interfaces';
