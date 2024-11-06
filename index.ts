@@ -57,7 +57,7 @@ interface Researcher {
 }
 
 // Route to create a new researcher
-app.post('/reacher', async (req: Request, res: Response) => {
+app.post('/researcher', async (req: Request, res: Response) => {
   try {
     const { firstName, lastName, sex, age, bio, email, password } = req.body;
 
