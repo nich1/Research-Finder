@@ -1,5 +1,6 @@
 import express from 'express';
 import researcherRoutes from './routes/researcherRoutes';
+import assistantRoutes from './routes/assistantRoutes';
 import postRoutes from './routes/postRoutes';
 import accountRoutes from './routes/accountRoutes';
 import searchRoutes from './routes/searchRoutes';
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Use route files
 app.use('', researcherRoutes);
+app.use('', assistantRoutes);
 app.use('', postRoutes);
 app.use('', accountRoutes);
 app.use('', searchRoutes);
