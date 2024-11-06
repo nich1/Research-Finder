@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import admin from 'firebase-admin'; // Import Firebase Admin SDK
+import bcrypt from 'bcrypt';
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -27,28 +29,70 @@ enum WorkType {
 }
 
 
-// GET request
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, Express on Vercel!');
-});
+// Define types for posts and researchers
+interface Post {
+  researcherID: string;
+  researcherName: string;
+  title: string;
+  body: string;
+  organization: string;
+  compensation: string;
+  approvalMessage: string;
+  workType: WorkType;
+  approvedUsers: string[];
+  expirationDate: admin.firestore.Timestamp;
+  createdAt: admin.firestore.FieldValue;
+}
 
-// POST route to echo back the request body and store it in Firestore
-app.post('/echo', async (req: Request, res: Response) => {
+interface Researcher {
+  firstName: string;
+  lastName: string;
+  age: number;
+  sex: string;
+  bio: string;
+  email: string;
+  password: string;
+  posts: string[]; // List of post IDs
+  researcherId: string;
+}
+
+// Route to create a new researcher
+app.post('/reacher', async (req: Request, res: Response) => {
   try {
-    // Echo the data back to the user
-    const data = req.body;
-    res.json({
-      message: 'You sent the following data:',
-      data: data,
-    });
+    const { firstName, lastName, sex, age, bio, email, password } = req.body;
 
-    // Store the data in Firestore
-    const docRef = db.collection('echoData').doc(); // Creates a new document
-    await docRef.set(data); // Store the request body in the new document
-    console.log('Data saved to Firestore');
+    // Validate required fields
+    if (!firstName || !lastName || !sex || !bio || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Generate a new researcher document with an auto-generated ID
+    const researcherRef = db.collection('researchers').doc();
+    const researcherId = researcherRef.id;
+
+    // Create a new researcher object
+    const newResearcher: Researcher = {
+      firstName,
+      lastName,
+      age,
+      sex,
+      bio,
+      email,
+      password: hashedPassword,
+      posts: [], // Initialize posts as an empty array if not provided
+      researcherId
+    };
+
+    // Save the researcher to Firestore
+    await researcherRef.set(newResearcher);
+
+    res.status(201).json({ message: 'Researcher created successfully', researcherId });
   } catch (error) {
-    console.error('Error saving data to Firestore:', error);
-    res.status(500).send('Error saving data');
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create researcher' });
   }
 });
 
@@ -113,6 +157,12 @@ app.post('/posts', async (req: Request, res: Response) => {
     await docRef.set(researchData); // Store the request body in the new document
     console.log('Research data saved to Firestore');
 
+    // Add the post reference to the researcher's posts array
+    const researcherRef = db.collection('researchers').doc(researcherID);
+    await researcherRef.update({
+      posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
+    });
+
     // Respond back to the user
     res.status(201).json({
       message: 'Research data added successfully',
@@ -166,6 +216,10 @@ app.post('/login', async (req: Request<{}, {}, AuthRequestBody>, res: Response) 
     res.status(404).json({ error: 'No account found with this email.' });
   }
 });
+
+
+
+
 
 // Start the server
 app.listen(port, () => {
