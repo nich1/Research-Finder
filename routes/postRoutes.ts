@@ -26,21 +26,15 @@ router.get('/posts', async (req: Request, res: Response) => {
 // POST route for adding research data
 router.post('/researcher/:researcherID/posts', async (req: Request, res: Response) => {
   const { researcherID } = req.params;
-  const {
-    title,
-    body,
-    organization,
-    compensation,
-    workType,
-    approvalMessage,
-    //expirationDate,
-  } = req.body;
+  const { title, body, organization, compensation, workType, approvalMessage, expirationDate } = req.body;
 
-  if (!workType || !title || !body || !organization || !compensation || !approvalMessage ) {
-    return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
+  // Validate required fields
+  if (!workType || !title || !body || !organization || !compensation || !approvalMessage || !expirationDate) {
+    return res.status(400).json({ message: 'Missing required fields.' });
   }
 
   try {
+    // Fetch researcher details from Firestore
     const researcherRef = db.collection('researchers').doc(researcherID);
     const researcherDoc = await researcherRef.get();
 
@@ -48,6 +42,7 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       return res.status(404).json({ message: 'Researcher ID not found.' });
     }
 
+    // Build the research data object
     const researchData: Post = {
       researcherID,
       researcherName: `${researcherDoc.data()?.firstName} ${researcherDoc.data()?.lastName}`,
@@ -57,18 +52,20 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       compensation,
       approvalMessage,
       workType,
-      approvedUsers: [],
-      //expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
-      //createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      approvedUsers: [],  // Set approvedUsers to an empty array
+      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
-    const docRef = db.collection('posts').doc();
-    await docRef.set(researchData);
+    // Add the post to the posts collection
+    const docRef = await db.collection('posts').add(researchData);
 
+    // Update the researcher with the new post ID
     await researcherRef.update({
       posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
     });
 
+    // Send a response with the new post data
     res.status(201).json({ message: 'Research data added successfully', data: researchData, id: docRef.id });
   } catch (error) {
     console.error('Error saving research data to Firestore:', error);
