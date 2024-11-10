@@ -72,7 +72,7 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     res.status(201).json({ message: 'Research data added successfully', data: researchData, id: docRef.id });
   } catch (error) {
     console.error('Error saving research data to Firestore:', error);
-    res.status(500).send('Error saving research data');
+    res.status(500).json({ error: `Error saving research data: ${error.message}` });
   }
 });
 
