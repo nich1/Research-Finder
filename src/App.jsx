@@ -6,7 +6,7 @@ import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Auth from './components/Auth';
 import Footer from './components/Footer';
-import Posts from './components/Posts';
+import Feed from './components/Feed';
 import ResearchPostingForm from './components/ResearchPostingForm'; // Importing ResearchPostingForm
 import Researchers from './components/Researchers'; // Importing Researchers component
 
@@ -23,7 +23,7 @@ function App() {
               <div className="main-container">
                 <MainContent />
                 <h1>Research Related Jobs</h1>
-                <Posts />
+                <Feed />
                 <Researchers /> {/* Display Researchers component on the main page */}
               </div>
             } 
