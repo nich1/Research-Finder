@@ -61,6 +61,10 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
+    console.log(researchData.researcherName);
+    console.log(researchData.createdAt);
+    console.log(researchData.expirationDate);
+
 
     const docRef = db.collection('posts').doc();
     await docRef.set(researchData);
