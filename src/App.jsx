@@ -6,7 +6,9 @@ import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Auth from './components/Auth';
 import Footer from './components/Footer';
-import Feed from './components/Feed';
+import Posts from './components/Posts';
+import ResearchPostingForm from './components/ResearchPostingForm'; // Importing ResearchPostingForm
+import Researchers from './components/Researchers'; // Importing Researchers component
 
 function App() {
   return (
@@ -26,17 +28,15 @@ function App() {
           />
 
           {/* Sign-in page route */}
-          <Route 
-            path="/signin" 
-            element={<Auth mode="signin" />} 
-          />
+          <Route path="/signin" element={<Auth mode="signin" />} />
 
           {/* Register page route */}
-          <Route 
-            path="/register" 
-            element={<Auth mode="register" />} 
-          />
+          <Route path="/register" element={<Auth mode="register" />} />
+
+          {/* Research posting page route */}
+          <Route path="/post-research" element={<ResearchPostingForm />} />
         </Routes>
+        
         <Footer />
       </div>
     </Router>

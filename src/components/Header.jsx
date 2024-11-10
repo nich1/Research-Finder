@@ -8,9 +8,10 @@ const Header = () => {
     <header className="centered-header">
       <h1>Welcome to Research Finder</h1>
       <nav>
-        <Link to="/" className="nav-link">Home</Link>
+      <Link to="/" className="nav-link">Home</Link>
         <Link to="/signin" className="nav-link">Sign In</Link>
         <Link to="/register" className="nav-link">Register</Link>
+        <Link to="/post-research" className="nav-link">Post Research</Link> {/* New Link */}
       </nav>
     </header>
   );
