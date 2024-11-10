@@ -26,7 +26,6 @@ function Feed() {
 
   return (
     <div className="Feed">
-      <h1>Research Posts</h1>
       {loading ? (
         <p>Loading posts...</p>
       ) : (
