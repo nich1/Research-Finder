@@ -24,7 +24,6 @@ function App() {
                 <MainContent />
                 <h1>Research Related Jobs</h1>
                 <Feed />
-                <Researchers /> {/* Display Researchers component on the main page */}
               </div>
             } 
           />
