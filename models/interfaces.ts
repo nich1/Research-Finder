@@ -20,8 +20,8 @@ export interface Post {
   approvalMessage: string;
   workType: WorkType;
   approvedUsers: string[];
-  expirationDate: FirebaseFirestore.Timestamp;
-  createdAt: FirebaseFirestore.FieldValue;
+ // expirationDate: FirebaseFirestore.Timestamp;
+  //createdAt: FirebaseFirestore.FieldValue;
 }
 
 export interface Researcher {

@@ -33,7 +33,7 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     compensation,
     workType,
     approvalMessage,
-    expirationDate,
+    //expirationDate,
   } = req.body;
 
   if (!workType || !title || !body || !organization || !compensation || !approvalMessage ) {
@@ -58,8 +58,8 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       approvalMessage,
       workType,
       approvedUsers: [],
-      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      //expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
+      //createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
     const docRef = db.collection('posts').doc();
