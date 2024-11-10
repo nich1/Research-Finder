@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import { admin, db } from '../config/firebase';
+import { Timestamp, FieldValue } from 'firebase-admin/firestore';
+
 
 import { Post, WorkType } from '../models/interfaces';
 
@@ -53,8 +55,8 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       approvalMessage,
       workType,
       approvedUsers: [],  // Set approvedUsers to an empty array
-      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+       expirationDate: Timestamp.fromDate(new Date(expirationDate)),
+  createdAt: FieldValue.serverTimestamp(),
     };
 
     // Add the post to the posts collection
