@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import { admin, db } from '../config/firebase';
+
 import { Post, WorkType } from '../models/interfaces';
+import exp from 'constants';
 
 const router = express.Router();
 
@@ -32,11 +34,10 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     compensation,
     workType,
     approvalMessage,
-    expirationDate,
-    approvedUsers,
+    //expirationDate,
   } = req.body;
 
-  if (!workType || !title || !body || !organization || !compensation || !approvalMessage || !Array.isArray(approvedUsers)) {
+  if (!workType || !title || !body || !organization || !compensation || !approvalMessage ) {
     return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
   }
 
@@ -58,7 +59,7 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       approvalMessage,
       workType,
       approvedUsers,
-      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
+      //expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
