@@ -1,4 +1,5 @@
 import express from 'express';
+const cors = require('cors');
 import researcherRoutes from './routes/researcherRoutes';
 import assistantRoutes from './routes/assistantRoutes';
 import postRoutes from './routes/postRoutes';
@@ -6,14 +7,18 @@ import applicationRoutes from './routes/applicationRoutes';
 import accountRoutes from './routes/accountRoutes';
 import searchRoutes from './routes/searchRoutes';
 
-
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Enable CORS for all routes
+app.use(cors({
+  origin: ['https://research-finder-1000.web.app/', 'http://localhost:5173'], // Replace with your front-end's domain
+  methods: 'GET,POST,PUT,DELETE', // Customize as needed
+  credentials: true    // Enable this if you need to include cookies
+}));
+
 // Middleware to parse JSON bodies
 app.use(express.json());
-
-// Initialize Firebase (firebase.ts already does this)
 
 // Use route files
 app.use('', researcherRoutes);
