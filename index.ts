@@ -20,6 +20,11 @@ app.use(cors({
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+// Initial URL
+app.get('/', (req, res) => {
+  res.send('Things are working :)');
+});
+
 // Use route files
 app.use('', researcherRoutes);
 app.use('', assistantRoutes);
