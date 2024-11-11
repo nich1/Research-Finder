@@ -14,7 +14,7 @@ function ResearchPostingForm() {
     event.preventDefault();
 
     try {
-      const response = await axios.post('/api/research', {
+      const response = await axios.post('http://localhost:3000/api/research', {
         title,
         description,
         supervisor,
