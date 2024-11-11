@@ -80,4 +80,6 @@
 
 .cta {
   margin-top: 40px;
+  color: #0073e6; /* Medium blue text color */
+  font-weight: bold;
 }
