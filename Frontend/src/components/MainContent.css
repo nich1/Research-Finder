@@ -60,27 +60,18 @@
   margin: 40px 0;
 }
 
-.profile-cards {
-  background-color: #ffffff; /* White background for readability */
-  color: #333333; /* Dark gray text for better contrast */
+.profile-cards, .profile-card {
+  background-color: #f9f9f9; /* Very light gray background */
+  color: #2b2b2b; /* Darker gray text */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  margin-bottom: 20px;
-}
-
-.profile-card {
-  background-color: #ffffff; /* White background for readability */
-  color: #333333; /* Dark gray text for better contrast */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
 .how-it-works {
-  background-color: #f0f8ff; /* Very light blue background for contrast */
-  color: #333333;
+  background-color: #e6fff5; /* Light mint green background */
+  color: #2b2b2b; /* Darker gray text */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

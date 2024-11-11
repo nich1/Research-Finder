@@ -1,39 +1,60 @@
-/* Center the header text and nav links */
+/* Apply background image and overall styling to the header */
 .centered-header {
-  text-align: center;
-  font-size: 2.5rem; /* Adjust size if needed */
+  position: relative;
+  background-image: url('/Frontend/src/assets/background.jpg'); /* Adjust path if necessary */
+  background-size: cover; /* Ensure the image covers the entire area */
+  background-position: center;
+  background-repeat: no-repeat; /* Prevents the image from repeating */
   color: white;
-  padding: 20px;
+  padding: 120px 0; /* Adds space around the text */
+  text-align: center;
 }
 
+/* Add a semi-transparent overlay */
+.centered-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+  z-index: 1;
+}
 
-/* Adjust spacing for nav elements */
-nav {
+/* Make sure the header content is above the overlay */
+.header-content {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  z-index: 2;
+}
+
+/* Styling for the header title */
+.centered-header h1 {
+  font-size: 3em;
+  margin: 0;
+}
+
+/* Flex layout for navigation links */
+.centered-header nav {
   display: flex;
-  justify-content: center; /* Centers the navigation items horizontally */
-  gap: 10px;
-  margin-top: 10px;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
- /* Style both the navigation links and buttons */
- .nav-link,
- .nav-button {
 
-   background-color: white;
-   color: black;
-   border: none;
-   padding: 8px 12px;
-   font-size: 16px;
-   cursor: pointer;
-   text-decoration: none;
-   border-radius: 4px;
-   margin-right: 10px;
- }
+/* Navigation link styling */
+.nav-link {
+  color: black;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1em;
+  transition: background-color 0.3s;
+}
 
- .nav-link:hover,
- .nav-button:hover {
-   background-color: #f0f0f0; /* Slightly darker white */
- }
-
-
-
-
+.nav-link:hover {
+  background-color: #f0f0f0;
+}
