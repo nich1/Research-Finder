@@ -1,13 +1,22 @@
 /* Apply background image and overall styling to the header */
 .centered-header {
   position: relative;
-  background-image: url('/Frontend/src/assets/background.jpg'); /* Adjust path if necessary */
-  background-size: cover; /* Ensure the image covers the entire area */
+  background-image: url('/Frontend/src/assets/background.jpg');
+  background-size: contain; /* Show full image */
   background-position: center;
-  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-repeat: no-repeat;
   color: white;
-  padding: 120px 0; /* Adds space around the text */
+  padding: 60px 0; /* Adjusted padding */
   text-align: center;
+  width: 100vw; /* Full viewport width */
+  height: 50vh; /* Adjust this for the best fit */
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .centered-header {
+    height: 40vh; /* Increase height on larger screens */
+  }
 }
 
 /* Add a semi-transparent overlay */
