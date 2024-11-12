@@ -27,39 +27,41 @@ const Auth = ({ mode }) => {
   };
 
   return (
-    <div className="auth">
-      <h3>{isRegister ? 'Register' : 'Sign In'}</h3>
-      <input
-        type="text"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleAuth}>{isRegister ? 'Register' : 'Sign In'}</button>
-      <p>{message}</p>
-      
-      {/* Google Sign-In Button */}
-      <div style={{ marginTop: '20px' }}>
-        <p>Or {isRegister ? 'register' : 'sign in'} with Google</p>
-        <GoogleAuth isRegister={isRegister} />
-      </div>
+    <div className="auth-container">
+      <div className="auth">
+        <h3>{isRegister ? 'Register' : 'Sign In'}</h3>
+        <input
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleAuth}>{isRegister ? 'Register' : 'Sign In'}</button>
+        <p>{message}</p>
+        
+        {/* Google Sign-In Button */}
+        <div style={{ marginTop: '20px' }}>
+          <p>Or {isRegister ? 'register' : 'sign in'} with Google</p>
+          <GoogleAuth isRegister={isRegister} />
+        </div>
 
-      <p>
-        {isRegister ? "Already have an account?" : "Don't have an account?"}{' '}
-        <span
-          style={{ color: 'blue', cursor: 'pointer' }}
-        >
-          <a href={isRegister ? "/signin" : "/register"} style={{ color: 'blue', textDecoration: 'underline' }}>
-            {isRegister ? 'Sign In' : 'Register'}
-          </a>
-        </span>
-      </p>
+        <p>
+          {isRegister ? "Already have an account?" : "Don't have an account?"}{' '}
+          <span
+            style={{ color: 'blue', cursor: 'pointer' }}
+          >
+            <a href={isRegister ? "/signin" : "/register"} style={{ color: 'blue', textDecoration: 'underline' }}>
+              {isRegister ? 'Sign In' : 'Register'}
+            </a>
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

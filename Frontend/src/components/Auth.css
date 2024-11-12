@@ -1,13 +1,70 @@
-.Auth{
-    color: blue; /* Change to the same color as the "Home" link */
-    background-color: transparent; /* Remove any background color */
-    border: none; /* Remove border if any */
-    text-decoration: none; /* To make it look like a link */
-    font-size: 16px; /* Match the font size of "Home" */
-    cursor: pointer;
-  }
-  
-  /* Add a hover effect if needed */
-  .sign-in:hover {
-    text-decoration: underline;
-  }
+/* Center the Auth component and adjust size */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #006341; /* UNT green background color */
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 400px; /* Adjust width for better visibility */
+  max-width: 90%;
+  font-size: 18px; /* Increase font size */
+}
+
+.auth h3 {
+  font-size: 24px; /* Make the title larger */
+  margin-bottom: 20px;
+}
+
+.auth input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.auth button {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  background-color: #006341; /* Matching UNT green */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.auth button:hover {
+  background-color: #004a28;
+}
+
+.auth p {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.auth a {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Style the Google sign-in section */
+.auth div p {
+  font-size: 16px;
+  text-align: center;
+}
+
