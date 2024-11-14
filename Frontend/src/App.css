@@ -18,19 +18,7 @@
   color: white; /* White text color for contrast */
 }
 
-/* Style for centered form container */
-.auth-container {
-  display: flex; /* Enables flex layout */
-  flex-direction: column; /* Stacks children vertically */
-  align-items: center; /* Centers items horizontally */
-  justify-content: center; /* Centers items vertically */
-  max-width: 400px; /* Limits the width of the form container */
-  padding: 20px; /* Adds padding around the form */
-  border: 1px solid #ddd; /* Light border for visual separation */
-  border-radius: 8px; /* Rounds the corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  margin-bottom: 30px; /* Adds space below the container */
-}
+
 
 /* Center and style posts */
 .posts-container {

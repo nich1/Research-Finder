@@ -14,7 +14,7 @@ const GoogleAuth = () => {
   };
 
   return (
-    <button onClick={signInWithGoogle} style={{ color: 'blue', cursor: 'pointer' }}>
+    <button onClick={signInWithGoogle} className="google-signin-button">
       Sign In with Google
     </button>
   );
