@@ -75,10 +75,11 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     const docRef = db.collection('posts').doc();
     await docRef.set(researchData);
 
-    // Add the post ID to the researcher's posts array
+    // Update the researcher's posts array
     await researcherRef.update({
       posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
     });
+    
 
     res.status(201).json({ message: 'Research data added successfully', data: researchData, id: docRef.id });
   } catch (error) {
@@ -87,7 +88,6 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
   }
 });
 
-export default router;
 
 
 export default router;
