@@ -77,7 +77,7 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
 
     // Add the post ID to the researcher's posts array
     await researcherRef.update({
-      posts: admin.firestore.FieldValue.arrayUnion(postRef.id),
+      posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
     });
 
     res.status(201).json({ message: 'Research data added successfully', data: researchData, id: docRef.id });
