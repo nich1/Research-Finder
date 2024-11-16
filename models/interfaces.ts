@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 export enum WorkType {
   Remote = 'remote',
   Online = 'online',
@@ -10,18 +11,14 @@ export enum Status {
   Declined = "declined",
 }
 
-export interface Post {
-  researcherID: string;
-  researcherName: string;
+interface Post {
   title: string;
   body: string;
   organization: string;
   compensation: string;
+  worktype: string;
   approvalMessage: string;
-  workType: WorkType;
-  approvedUsers: string[];
-  expirationDate: FirebaseFirestore.Timestamp;
-  createdAt: FirebaseFirestore.FieldValue;
+  expirationDate: Timestamp; // Expecting a Firestore Timestamp for expirationDate
 }
 
 export interface Researcher {

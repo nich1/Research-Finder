@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import { admin, db } from '../config/firebase';
-import { Post, WorkType } from '../models/interfaces';
+import { WorkType } from '../models/interfaces';
+import { Timestamp } from "firebase/firestore";
+
 
 const router = express.Router();
 
@@ -33,11 +35,15 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     workType,
     approvalMessage,
     expirationDate,
-    approvedUsers = []
   } = req.body;
 
-  if (!workType || !title || !body || !organization || !compensation || !approvalMessage ) {
+  if (!workType || !title || !body || !organization || !compensation || !approvalMessage || !expirationDate) {
     return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
+  }
+
+  // Ensure expirationDate is a Firestore Timestamp
+  if (!(expirationDate instanceof Timestamp)) {
+    return res.status(400).json({ error: 'expirationDate must be a Firestore Timestamp' });
   }
 
   try {
@@ -48,23 +54,17 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       return res.status(404).json({ message: 'Researcher ID not found.' });
     }
 
-    const researchData: Post = {
-      researcherID,
-      researcherName: `${researcherDoc.data()?.firstName} ${researcherDoc.data()?.lastName}`,
+    const researchData = {
       title,
-      body,
+      body, 
       organization,
       compensation,
-      approvalMessage,
       workType,
-      approvedUsers,
-      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      approvalMessage,
+      expirationDate,
+      createdAt: Timestamp.now(),
+      approvedUsers: [],
     };
-    console.log(researchData.researcherName);
-    console.log(researchData.createdAt);
-    console.log(researchData.expirationDate);
-
 
     const docRef = db.collection('posts').doc();
     await docRef.set(researchData);
