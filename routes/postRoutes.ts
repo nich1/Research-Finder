@@ -38,18 +38,18 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
   } = req.body;
 
   if (!workType || !title || !body || !organization || !compensation || !approvalMessage || !expirationDate) {
-    return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
+    return res.status(400).json({ message: 'Missing required fields.' });
   }
 
   let expirationTimestamp: Timestamp;
   try {
-    // Convert expirationDate from ISO string to Firestore Timestamp
     expirationTimestamp = Timestamp.fromDate(new Date(expirationDate));
   } catch (error) {
     return res.status(400).json({ error: 'Invalid expirationDate format. It must be a valid ISO string.' });
   }
 
   try {
+    // Validate researcher existence
     const researcherRef = db.collection('researchers').doc(researcherID);
     const researcherDoc = await researcherRef.get();
 
@@ -57,9 +57,10 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       return res.status(404).json({ message: 'Researcher ID not found.' });
     }
 
+    // Prepare research data
     const researchData = {
       title,
-      body, 
+      body,
       organization,
       compensation,
       workType,
@@ -69,18 +70,18 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       approvedUsers: [],
     };
 
+    console.log('Saving research data:', researchData);
+
+    // Save data to Firestore
     const docRef = db.collection('posts').doc();
     await docRef.set(researchData);
 
-    /*await researcherRef.update({
-      posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
-    });
-    */
     res.status(201).json({ message: 'Research data added successfully', data: researchData, id: docRef.id });
   } catch (error) {
-    console.error('Error saving research data to Firestore:', error);
+    console.error('Error saving research data to Firestore:', error.message, error.stack);
     res.status(500).send('Error saving research data');
   }
 });
+
 
 export default router;
