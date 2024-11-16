@@ -64,7 +64,7 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       compensation,
       workType,
       approvalMessage,
-      expirationDate,
+      expirationDate: expirationTimestamp,
       createdAt: Timestamp.now(),
       approvedUsers: [],
     };
@@ -72,10 +72,10 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     const docRef = db.collection('posts').doc();
     await docRef.set(researchData);
 
-    await researcherRef.update({
+    /*await researcherRef.update({
       posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
     });
-
+    */
     res.status(201).json({ message: 'Research data added successfully', data: researchData, id: docRef.id });
   } catch (error) {
     console.error('Error saving research data to Firestore:', error);
