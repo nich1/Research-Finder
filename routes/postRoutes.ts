@@ -41,9 +41,12 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     return res.status(400).json({ message: 'Missing required fields or approvedUsers is not an array.' });
   }
 
-  // Ensure expirationDate is a Firestore Timestamp
-  if (!(expirationDate instanceof Timestamp)) {
-    return res.status(400).json({ error: 'expirationDate must be a Firestore Timestamp' });
+  let expirationTimestamp: Timestamp;
+  try {
+    // Convert expirationDate from ISO string to Firestore Timestamp
+    expirationTimestamp = Timestamp.fromDate(new Date(expirationDate));
+  } catch (error) {
+    return res.status(400).json({ error: 'Invalid expirationDate format. It must be a valid ISO string.' });
   }
 
   try {
