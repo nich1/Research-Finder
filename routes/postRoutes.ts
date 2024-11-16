@@ -1,7 +1,5 @@
 import express, { Request, Response } from 'express';
 import { admin, db } from '../config/firebase';
-import { WorkType } from '../models/interfaces';
-import { Timestamp } from "firebase/firestore";
 
 
 const router = express.Router();
@@ -41,9 +39,10 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     return res.status(400).json({ message: 'Missing required fields.' });
   }
 
-  let expirationTimestamp: Timestamp;
+  let expirationTimestamp: admin.firestore.Timestamp;
   try {
-    expirationTimestamp = Timestamp.fromDate(new Date(expirationDate));
+    // Use admin.firestore.Timestamp
+    expirationTimestamp = admin.firestore.Timestamp.fromDate(new Date(expirationDate));
   } catch (error) {
     return res.status(400).json({ error: 'Invalid expirationDate format. It must be a valid ISO string.' });
   }
@@ -66,7 +65,7 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       workType,
       approvalMessage,
       expirationDate: expirationTimestamp,
-      createdAt: Timestamp.now(),
+      createdAt: admin.firestore.Timestamp.now(),
       approvedUsers: [],
     };
 
@@ -82,6 +81,8 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
     res.status(500).send('Error saving research data');
   }
 });
+
+export default router;
 
 
 export default router;
