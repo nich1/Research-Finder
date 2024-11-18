@@ -24,7 +24,7 @@
 .posts-container {
   max-width: 600px; /* Limits the width of the posts container */
   margin-top: 20px; /* Adds space above the posts container */
-  background-color: #007BFF; /* Blue background for the posts section */
+  background-color: #ecf3f1; /* UNT green background */
   padding: 20px; /* Adds padding inside the posts container */
   border-radius: 8px; /* Rounds the corners */
   color: white; /* White text color for contrast */
@@ -34,7 +34,7 @@
 .posts-container h1 {
   font-size: 1.8rem; /* Increases font size of the heading */
   margin-bottom: 20px; /* Adds space below the heading */
-  background-color: #0056b3; /* Darker blue background for the heading */
+  background-color: #f0f5f2; /* UNT green background */
   padding: 10px; /* Adds padding around the heading text */
   border-radius: 4px; /* Rounds the corners */
   color: white; /* White text color for contrast */
