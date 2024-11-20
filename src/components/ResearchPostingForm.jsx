@@ -14,7 +14,7 @@ function ResearchPostingForm() {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/api/research', {
+      const response = await axios.post('https://research-finder-1000.firebaseio.com', {
         title,
         description,
         supervisor,

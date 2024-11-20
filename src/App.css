@@ -14,7 +14,7 @@
 
 /* Style the header */
 .header {
-  background-color: #00853E; /* UNT green background */
+  background-color: #eaf0ed; /* UNT green background */
   color: white; /* White text color for contrast */
 }
 
@@ -51,7 +51,7 @@
 
 /* Overall page styling */
 body {
-  background-color: #00853E; /* UNT green as background for the entire page */
+  background-color: #e9f3ee; /* UNT green as background for the entire page */
   color: white; /* White text color for general readability */
   font-family: Arial, sans-serif; /* Sets the font for the entire page */
   margin: 0; /* Removes default margin */
