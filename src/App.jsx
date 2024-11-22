@@ -7,19 +7,32 @@ import Auth from './components/Auth';
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Home page route */}
-        <Route path="/" element={<Home />} />
+      <div>
+        <header style={{ textAlign: 'center', padding: '10px', backgroundColor: '#f0f0f0' }}>
+          <h1>Research Finder App</h1>
+          <p style={{ fontStyle: 'italic', color: '#555' }}>
+            🚀 Progress Update: Firebase and Frontend Integration Ongoing!
+          </p>
+        </header>
+        <Routes>
+          {/* Home page route */}
+          <Route path="/" element={<Home />} />
 
-        {/* User page route */}
-        <Route path="/user" element={<UserPage />} />
+          {/* User page route */}
+          <Route path="/user" element={<UserPage />} />
 
-        {/* Authentication routes */}
-        <Route path="/signin" element={<Auth mode="signin" />} />
-        <Route path="/register" element={<Auth mode="register" />} />
-      </Routes>
+          {/* Authentication routes */}
+          <Route path="/signin" element={<Auth mode="signin" />} />
+          <Route path="/register" element={<Auth mode="register" />} />
+        </Routes>
+        <footer style={{ textAlign: 'center', marginTop: '20px', padding: '10px', backgroundColor: '#f0f0f0' }}>
+          <p>&copy; 2024 Research Finder Project - Capstone</p>
+        </footer>
+      </div>
     </Router>
   );
 }
 
 export default App;
+
+
