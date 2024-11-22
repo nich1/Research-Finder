@@ -1,26 +1,23 @@
-// App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './App.css';
-import Header from './components/Header';
-import MainContent from './components/MainContent';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
+import UserPage from './components/UserPage';
 import Auth from './components/Auth';
-import Footer from './components/Footer';
-import Posts from './components/Posts';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<MainContent />} />
-          <Route path="/signin" element={<Auth />} /> {/* New route for sign-in page */}
-        </Routes>
-        <h1>Research Related Jobs</h1>
-        <Posts />
-        <Footer />
-      </div>
+      <Routes>
+        {/* Home page route */}
+        <Route path="/" element={<Home />} />
+
+        {/* User page route */}
+        <Route path="/user" element={<UserPage />} />
+
+        {/* Authentication routes */}
+        <Route path="/signin" element={<Auth mode="signin" />} />
+        <Route path="/register" element={<Auth mode="register" />} />
+      </Routes>
     </Router>
   );
 }
