@@ -1,18 +1,28 @@
 import React from 'react';
-
-// Import CSS for styling
 import './Home.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Home() {
+  const navigate = useNavigate(); // Initialize navigate function
+
   return (
     <div className="home-container">
       {/* Header */}
       <header className="home-header">
         <div className="logo">Research Finder</div>
-        <input type="text" placeholder="Search research postings..." className="search-bar" />
+        <input
+          type="text"
+          placeholder="Search research postings..."
+          className="search-bar"
+        />
         <div className="header-buttons">
-          <button className="btn">Sign In</button>
-          <button className="btn btn-primary">Post a Research Position</button>
+          {/* Add onClick to navigate to /signin */}
+          <button
+            className="btn sign-in-button"
+            onClick={() => navigate('/signin')}
+          >
+            Sign In
+          </button>
         </div>
       </header>
 
@@ -31,19 +41,7 @@ function Home() {
         {/* Research Postings */}
         <div className="postings-container">
           <h2>Research Opportunities</h2>
-          <div className="posting">
-            <h3>Machine Learning Internship</h3>
-            <p>Department: Computer Science</p>
-            <p>Description: Work on cutting-edge AI projects...</p>
-            <button className="btn btn-secondary">View Details</button>
-          </div>
-          <div className="posting">
-            <h3>Climate Change Research</h3>
-            <p>Department: Environmental Studies</p>
-            <p>Description: Join our team in studying global climate change...</p>
-            <button className="btn btn-secondary">View Details</button>
-          </div>
-          {/* Add more postings as needed */}
+          {/* Content goes here */}
         </div>
       </div>
 
