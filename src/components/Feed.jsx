@@ -30,7 +30,7 @@ function Feed() {
   }, []);
 
   return (
-    <div className="feed-container">
+    <div className="feed-container" style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
       {loading && <p>Loading posts...</p>}
       {error && <p className="feed-error">{error}</p>}
       {!loading && !error && posts.length === 0 && <p>No posts available at the moment.</p>}
