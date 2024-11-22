@@ -11,16 +11,6 @@ app.use(express.json());
 // Researcher Routes
 const researcherCollection = "researchers";
 
-app.post("/researchers", async (req, res) => {
-  try {
-    const researcher: Researcher = req.body;
-    const newDoc = await db.collection(researcherCollection).add(researcher);
-    res.status(201).send({ id: newDoc.id });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
-
 app.put("/researchers/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -46,28 +36,11 @@ app.get("/researchers/:id", async (req, res) => {
   }
 });
 
-app.delete("/researchers/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    await db.collection(researcherCollection).doc(id).delete();
-    res.status(200).send({ message: "Researcher deleted successfully" });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
 
 // Assistant Routes
 const assistantCollection = "assistants";
 
-app.post("/assistants", async (req, res) => {
-  try {
-    const assistant: Assistant = req.body;
-    const newDoc = await db.collection(assistantCollection).add(assistant);
-    res.status(201).send({ id: newDoc.id });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
+
 
 app.put("/assistants/:id", async (req, res) => {
   try {
@@ -89,16 +62,6 @@ app.get("/assistants/:id", async (req, res) => {
     } else {
       res.status(200).send(doc.data());
     }
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
-
-app.delete("/assistants/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    await db.collection(assistantCollection).doc(id).delete();
-    res.status(200).send({ message: "Assistant deleted successfully" });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
