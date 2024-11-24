@@ -99,12 +99,7 @@ function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="home-footer">
-        <p>© 2024 Research Finder. All rights reserved.</p>
-        <a href="/terms">Terms of Service</a>
-        <a href="/help">Help</a>
-      </footer>
+    
     </div>
   );
 }

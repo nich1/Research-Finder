@@ -6,6 +6,7 @@ import Auth from './components/Auth';
 import Feed from './components/Feed';
 import Header from './components/Header';
 import SearchResults from './components/SearchResults';
+import Footer from './components/Footer'; // Import the Footer component
 
 function App() {
   return (
@@ -27,16 +28,7 @@ function App() {
         </main>
 
         {/* Footer Component */}
-        <footer
-          style={{
-            textAlign: 'center',
-            marginTop: '20px',
-            padding: '10px',
-            backgroundColor: '#f0f0f0',
-          }}
-        >
-          <p>&copy; 2024 Research Finder Project - Capstone</p>
-        </footer>
+        <Footer />
       </div>
     </Router>
   );

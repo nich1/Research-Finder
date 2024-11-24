@@ -1,0 +1,26 @@
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #004d00;
+  color: #fff; /* Ensure the text remains visible against the dark green background */
+  margin-top: 20px;
+}
+
+.footer-links,
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.footer-links a,
+.social-links a {
+  text-decoration: none;
+  color: #a7e9af; /* Slightly lighter green for links */
+}
+
+.footer-links a:hover,
+.social-links a:hover {
+  text-decoration: underline;
+}
