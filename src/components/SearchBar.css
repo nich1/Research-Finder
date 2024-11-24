@@ -1,0 +1,54 @@
+/* Updated CSS for Search Bar */
+.search-bar {
+  width: 70%; /* Increase the width to occupy more space */
+  max-width: 600px; /* Set a max width to prevent it from becoming too large */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  color: blue;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align to the left */
+  gap: 10px; /* Space between the search bar and button */
+  flex-grow: 1; /* Allow the container to grow and take up available space */
+}
+
+.search-button, .btn {
+  background-color: white;
+  color: blue;
+  border: 1px solid blue;
+  border-radius: 5px;
+  padding: 10px 20px; /* Same padding for consistent size */
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.search-button:hover, .btn:hover {
+  background-color: blue;
+  color: white;
+  border-color: blue;
+}
+
+/* Center the Search Bar and Button Container */
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .search-bar {
+    width: 90%; /* Adjust width for smaller screens */
+  }
+}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 import { auth, googleProvider } from '../config/firebase';
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { signInWithPopup } from 'firebase/auth';
 
 const Auth = ({ mode }) => {
   const navigate = useNavigate();
@@ -13,11 +13,27 @@ const Auth = ({ mode }) => {
 
   const handleAuth = async () => {
     try {
-      if (isRegister) {
-        // Registration logic here (if needed)
+      const payload = {
+        userEmail: email,
+        provider: 'email',
+        creationDate: new Date().toISOString(),
+        signInDate: new Date().toISOString(),
+        userID: 'user-id', // Replace this with real user ID or generate dynamically
+        expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // Example: 30 days from now
+      };
+
+      const response = await fetch('http://localhost:5000/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(`Sign-in successful! Account ID: ${data.id}`);
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
-        setMessage('Sign-in successful!');
+        throw new Error(data.message || 'Failed to sign in.');
       }
     } catch (error) {
       setMessage(`Error: ${error.message}`);
@@ -27,8 +43,30 @@ const Auth = ({ mode }) => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      console.log('Google Sign-In Result:', result.user);
-      setMessage(`Welcome ${result.user.displayName}!`);
+      const user = result.user;
+
+      const payload = {
+        userEmail: user.email,
+        provider: 'google',
+        creationDate: user.metadata.creationTime,
+        signInDate: new Date().toISOString(),
+        userID: user.uid,
+        expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // Example: 30 days from now
+      };
+
+      const response = await fetch('https://research-finder-server.vercel.app', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(`Welcome, ${user.displayName}! Account ID: ${data.id}`);
+      } else {
+        throw new Error(data.message || 'Failed to sign in with Google.');
+      }
     } catch (error) {
       console.error('Error during Google Sign-In:', error.message);
       setMessage(`Error: ${error.message}`);

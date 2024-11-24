@@ -12,7 +12,7 @@ function Feed() {
       setError(null);
 
       try {
-        const response = await fetch('https://research-finder-server.vercel.app/posts');
+        const response = await fetch('https://research-finder-server.vercel.app');
         if (!response.ok) {
           throw new Error(`Error fetching posts: ${response.statusText}`);
         }

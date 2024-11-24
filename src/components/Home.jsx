@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import SidebarFilter from './SidebarFilter';
-import Header from './Header';
 import './Home.css';
 
 function Home() {
@@ -59,9 +58,6 @@ function Home() {
 
   return (
     <div className="home-container">
-      {/* Header */}
-      <Header />
-
       {/* Main Content */}
       <div className="main-content">
         {/* Sidebar with filters */}
