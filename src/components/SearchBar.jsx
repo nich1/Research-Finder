@@ -29,19 +29,22 @@ const SearchBar = ({ onSearchResults }) => {
 
   return (
     <div className="home-header">
-    
-    <div className="search-container">
-      <input
-        type="text"
-        placeholder="Search for posts..."
-        className="search-bar"
-      />
-      <button className="search-button">Search</button>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search for posts..."
+          className="search-bar"
+          value={query} // Bind input to state
+          onChange={handleInputChange} // Update state on input change
+        />
+        <button
+          className="search-button"
+          onClick={handleSearch} // Trigger search on click
+        >
+          Search
+        </button>
+      </div>
     </div>
-    <div className="header-buttons">
-
-    </div>
-  </div>
   );
 };
 

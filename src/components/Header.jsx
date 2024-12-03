@@ -1,8 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import ReactDOM from 'react-dom'; // Ensure ReactDOM is imported
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import './Header.css';
-import SearchBar from './SearchBar'; // Ensure this is correctly imported
+import SearchBar from './SearchBar'; // Ensure the correct path
 
+
+// The Header component
 function Header() {
   const navigate = useNavigate();
 
@@ -13,15 +16,23 @@ function Header() {
   };
 
   return (
-    
     <header className="home-header">
       <h1>Research Finder App</h1>
-          
+      
       <div className="logo" onClick={() => navigate('/')}>
-  
+        {/* Add content for the logo */}
+        <img src="/path-to-logo.png" alt="Research Finder Logo" />
       </div>
+      
       <SearchBar onSearch={handleSearch} /> {/* Primary SearchBar */}
+      
       <div className="header-buttons">
+        <button
+          className="btn home-button"
+          onClick={() => navigate('/')}
+        >
+          Home
+        </button>
         <button
           className="btn sign-in-button"
           onClick={() => navigate('/signin')}
@@ -33,4 +44,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default Header; // Ensure it is a default export
