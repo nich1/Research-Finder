@@ -19,10 +19,7 @@ function Header() {
     <header className="home-header">
       <h1>Research Finder App</h1>
       
-      <div className="logo" onClick={() => navigate('/')}>
-        {/* Add content for the logo */}
-        <img src="/path-to-logo.png" alt="Research Finder Logo" />
-      </div>
+   
       
       <SearchBar onSearch={handleSearch} /> {/* Primary SearchBar */}
       
