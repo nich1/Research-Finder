@@ -5,8 +5,8 @@ const FeedDisplay = ({ data }) => {
   const { title, body, compensation, organization, researcherName, workType } = data;
 
   return (
-    <div className="feed-display-card" style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '15px', borderRadius: '8px' }}>
-      <h3 style={{ marginBottom: '10px', color: '#333' }}>{title || 'Untitled'}</h3>
+    <div className="feed-display-card">
+      <h3 className="feed-display-title">{title || 'Untitled'}</h3>
       <p>{body || 'No description available.'}</p>
       <p><strong>Compensation:</strong> {compensation || 'Not specified'}</p>
       <p><strong>Organization:</strong> {organization || 'Unknown'}</p>

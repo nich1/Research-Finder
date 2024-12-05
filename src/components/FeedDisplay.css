@@ -1,33 +1,20 @@
-/* FeedDisplay.css */
-
 .feed-display-card {
-  background-color: white;
-  width: 50%;
-  color: black;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px auto;
+  background-color: #fff; /* White background for contrast */
+  padding: 20px; /* Space inside the card */
+  margin: 15px auto; /* Space between cards */
+  border: 1px solid #ccc; /* Solid border for the box */
+  border-radius: 8px; /* Rounded corners for the card */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for a card-like effect */
+  max-width: 800px; /* Optional: to limit the card's width */
 }
 
 .feed-display-title {
-  margin: 0 0 10px;
   font-size: 1.5em;
+  color: #333; /* Dark color for titles */
+  margin-bottom: 10px;
 }
 
 .feed-display-body {
   margin: 10px 0;
   font-size: 1em;
-}
-
-.feed-display-compensation {
-  margin: 10px 0;
-  font-size: 1em;
-}
-
-.feed-display-error {
-  text-align: center;
-  color: red;
-  font-size: 1em;
-  margin: 20px;
 }

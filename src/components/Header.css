@@ -34,29 +34,51 @@
   border-radius: 4px;
 }
 
-.search-button {
+/* Reusable button styles */
+.btn {
   padding: 8px 16px;
-  background-color: #2E8B57;
+  background-color: #2E8B57; /* UNT green */
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-align: center;
+  font-size: 14px;
 }
 
-.search-button:hover {
+.btn:hover {
   background-color: #1E5B37; /* Darker shade for hover effect */
+}
+
+.search-button {
+  padding: 8px 16px;
+  background-color: #2E8B57; /* UNT green */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
 }
 
 .header-buttons .home-button {
-  margin-right: 10px; /* Add some spacing between buttons */
   padding: 8px 16px;
-  background-color: #2E8B57; /* Example UNT green */
+  background-color: #2E8B57; /* UNT green */
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-align: center;
+  font-size: 14px;
 }
 
-.header-buttons .home-button:hover {
-  background-color: #1E5B37; /* Darker shade for hover effect */
+.header-buttons .sign-in-button {
+  padding: 8px 16px;
+  background-color: #2E8B57; /* UNT green */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
 }

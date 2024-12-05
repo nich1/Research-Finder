@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import SidebarFilter from './SidebarFilter';
 import './Home.css';
 
+// Filter posts based on selected filters
+const filterPosts = (filters, posts) => {
+  if (filters.length === 0) return posts; // No filters, show all posts
+  return posts.filter((post) =>
+    filters.every((filter) => post.body.toLowerCase().includes(filter.toLowerCase()))
+  );
+};
+
 function Home() {
   const [posts, setPosts] = useState([]); // State for fetched posts
   const [filteredPosts, setFilteredPosts] = useState([]); // State for filtered posts
@@ -44,16 +52,7 @@ function Home() {
       ? selectedFilters.filter((f) => f !== filterValue) // Remove filter if already selected
       : [...selectedFilters, filterValue]; // Add new filter
     setSelectedFilters(updatedFilters);
-
-    // Filter posts based on selected filters (you need to implement logic for your specific filter structure)
-    if (updatedFilters.length === 0) {
-      setFilteredPosts(posts); // No filters, show all posts
-    } else {
-      const filtered = posts.filter((post) =>
-        updatedFilters.every((filter) => post.body.toLowerCase().includes(filter.toLowerCase()))
-      );
-      setFilteredPosts(filtered);
-    }
+    setFilteredPosts(filterPosts(updatedFilters, posts));
   };
 
   return (
@@ -63,8 +62,16 @@ function Home() {
         {/* Sidebar with filters */}
         <SidebarFilter
           filters={filters}
-          selectedFilters={selectedFilters}
-          onFilterChange={handleFilterChange}
+          renderFilter={(filter) => (
+            <label>
+              <input
+                type="checkbox"
+                value={filter.value}
+                onChange={() => handleFilterChange(filter.value)}
+              />
+              {filter.label}
+            </label>
+          )}
         />
 
         {/* Research Postings */}
@@ -98,8 +105,6 @@ function Home() {
             ))}
         </div>
       </div>
-
-    
     </div>
   );
 }
