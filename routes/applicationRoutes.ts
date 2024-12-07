@@ -84,5 +84,52 @@ router.post('/applications', async (req: Request, res: Response) => {
 
 });
 
+// Route to update application status
+router.put('/applications/status', async (req: Request, res: Response) => {
+  try {
+    const { applicationId, status } = req.body;
+
+    // Validate request body
+    if (!applicationId || !status) {
+      return res.status(400).json({ error: 'Application ID and Status are required' });
+    }
+
+    // Validate status
+    if (!Object.values(Status).includes(status)) {
+      return res.status(400).json({ error: `Invalid status. Valid statuses are: ${Object.values(Status).join(', ')}` });
+    }
+
+    // Check if the application exists
+    const applicationRef = db.collection('applications').doc(applicationId);
+    const applicationSnapshot = await applicationRef.get();
+
+    if (!applicationSnapshot.exists) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+
+    // Update the status of the application
+    await applicationRef.update({ applicationStatus: status });
+
+    // Add a message to the assistant's inbox
+    const assistantRef = db.collection('assistants').doc(researcherId);
+    const researcherSnapshot = await researcherRef.get();
+
+    if (!researcherSnapshot.exists) {
+      return res.status(404).json({ error: 'Researcher not found' });
+    }
+
+    const researcherData = researcherSnapshot.data();
+    const inbox = researcherData?.inbox || [];
+    const notification = `${assistantFirstName} sent an application for ${postTitle}`;
+
+    inbox.push(notification);
+    await researcherRef.update({ inbox });
+
+    res.status(200).json({ message: 'Application status updated successfully' });
+  } catch (error) {
+    console.error('Error updating application status:', error);
+    res.status(500).json({ error: 'Failed to update application status' });
+  }
+});
 
 export default router;
