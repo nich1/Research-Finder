@@ -11,24 +11,24 @@ router.post('/applications', async (req: Request, res: Response) => {
   try {
     const { assistantId, postId, message } = req.body;
 
-    // Check if assistantId and postId are provided
-    if (!assistantId || !postId) {
-      return res.status(400).json({ error: 'Assistant ID and Post ID are required' });
+    // Validate request body
+    if (!assistantId || !postId || !message) {
+      return res.status(400).json({ error: 'Assistant ID, Post ID, and Message are required' });
     }
+//--
+    // Check if assistantId matches the name of a document in the Assistants collection
+    const assistantSnapshot = await db.collection('assistants').doc(assistantId).get();
+    if (!assistantSnapshot.exists) {
+      return res.status(404).json({ error: 'Invalid Assistant ID' });
+    }
+    const assistantData = assistantSnapshot.data();
 
-    // Validate assistantId
-    const assistantRef = db.collection('Assistants').doc(assistantId);
-    const assistantDoc = await assistantRef.get();
-    if (!assistantDoc.exists) {
-      return res.status(400).json({ error: 'Invalid Assistant ID' });
+    // Check if postId matches the name of a document in the Posts collection
+    const postSnapshot = await db.collection('posts').doc(postId).get();
+    if (!postSnapshot.exists) {
+      return res.status(404).json({ error: 'Invalid Post ID' });
     }
-
-    // Validate postId
-    const postRef = db.collection('Posts').doc(postId);
-    const postDoc = await postRef.get();
-    if (!postDoc.exists) {
-      return res.status(400).json({ error: 'Invalid Post ID' });
-    }
+    const postData = postSnapshot.data();
 
     // Create a new application document
     const applicationRef = db.collection('Applications').doc();
@@ -51,5 +51,6 @@ router.post('/applications', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to submit application' });
   }
 });
+
 
 export default router;

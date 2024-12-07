@@ -19,6 +19,8 @@ interface Post {
   worktype: string;
   approvalMessage: string;
   expirationDate: Timestamp; // Expecting a Firestore Timestamp for expirationDate
+  createdAt: Timestamp;
+  approvedUsers: string[],
 }
 
 export interface Researcher {
@@ -30,6 +32,13 @@ export interface Researcher {
   email: string;
   password: string;
   posts: string[];
+}
+
+export interface Message {
+  postID: string,
+  body: string,
+  status: Status,
+  seen: boolean
 }
 
 export interface Assistant {
