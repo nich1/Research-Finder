@@ -35,9 +35,9 @@ router.post('/applications', async (req: Request, res: Response) => {
     const applicationId = applicationRef.id;
 
     const newApplication: Application = {
-      assistantID,
-      postID,
-      applicationStatus, 
+      assistantId,
+      postId,
+      applicationStatus: Status.Undecided, 
       message,
       createdAt: admin.firestore.Timestamp.now(),
     };
