@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 import { auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 const Auth = ({ mode }) => {
   const navigate = useNavigate();
@@ -57,13 +58,67 @@ const Auth = ({ mode }) => {
       }
     }
   };
-
-  // Handle Sign In (unchanged)
-  const handleSignIn = async () => {
-    // Same sign-in logic as before
-    setMessage('Sign In functionality unchanged.');
+  const handleGoogleSignIn = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+  
+      const payload = {
+        userEmail: user.email,
+        provider: 'google',
+        signInDate: new Date().toISOString(),
+        userID: user.uid,
+      };
+  
+      const response = await fetch(`${BACKEND_URL}/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+  
+      if (response.ok) {
+        setMessage(`Welcome, ${user.displayName}! Redirecting to home...`);
+        setTimeout(() => navigate('/'), 3000); // Redirect after successful sign-in
+      } else {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to sign in with Google.');
+      }
+    } catch (error) {
+      setMessage(`Error: ${error.message}`);
+    }
   };
-
+  const handleSignIn = async () => {
+    try {
+      // Firebase Authentication with email and password
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // Send data to backend (optional)
+      const payload = {
+        userEmail: user.email,
+        provider: 'email',
+        signInDate: new Date().toISOString(),
+        userID: user.uid,
+      };
+  
+      const response = await fetch(`${BACKEND_URL}/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+  
+      if (response.ok) {
+        setMessage('Sign In successful! Redirecting...');
+        setTimeout(() => navigate('/'), 3000); // Redirect after successful sign-in
+      } else {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to sign in.');
+      }
+    } catch (error) {
+      setMessage(`Error: ${error.message}`);
+    }
+  };
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -73,6 +128,17 @@ const Auth = ({ mode }) => {
         {isRegister ? (
           <>
             {/* Registration Form */}
+            <button className="auth-google-button" onClick={handleGoogleSignIn}>
+              <img
+                src="/assets/google-icon.png"
+                alt="Google icon"
+                className="google-icon"
+              />
+              Register with Google
+            </button>
+            <div className="auth-divider">
+              <span>or</span>
+            </div>
             <input
               type="email"
               placeholder="Email address"
@@ -101,7 +167,7 @@ const Auth = ({ mode }) => {
         ) : (
           <>
             {/* Sign In Form */}
-            <button className="auth-google-button">
+            <button className="auth-google-button" onClick={handleGoogleSignIn}>
               <img
                 src="/assets/google-icon.png"
                 alt="Google icon"
