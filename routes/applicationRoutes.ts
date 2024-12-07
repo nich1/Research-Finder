@@ -15,7 +15,7 @@ router.post('/applications', async (req: Request, res: Response) => {
     if (!assistantId || !postId || !message) {
       return res.status(400).json({ error: 'Assistant ID, Post ID, and Message are required' });
     }
-//--
+
     // Check if assistantId matches the name of a document in the Assistants collection
     const assistantSnapshot = await db.collection('assistants').doc(assistantId).get();
     if (!assistantSnapshot.exists) {
@@ -29,27 +29,28 @@ router.post('/applications', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Invalid Post ID' });
     }
     const postData = postSnapshot.data();
+//--
 
-    // Create a new application document
-    const applicationRef = db.collection('Applications').doc();
+    const applicationRef = db.collection('applications').doc();
     const applicationId = applicationRef.id;
 
-    const newApplication : Application = {
-        postID,
-        assistantID,
-        message,
-        status: Status.Undecided,
-        submittedAt: admin.firestore.FieldValue.serverTimestamp()
+    const newApplication: Application = {
+      assistantID,
+      postID,
+      applicationStatus, 
+      message,
+      createdAt: admin.firestore.Timestamp.now(),
     };
 
-    // Save the new application in the Applications collection
     await applicationRef.set(newApplication);
 
-    res.status(201).json({ message: 'Application submitted successfully', applicationId });
+    res.status(201).json({ message: 'Application created successfully', applicationId });
   } catch (error) {
-    console.error('Error submitting application:', error);
-    res.status(500).json({ error: 'Failed to submit application' });
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create application' });
   }
+
+
 });
 
 

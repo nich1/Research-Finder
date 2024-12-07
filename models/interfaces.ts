@@ -57,5 +57,5 @@ export interface Application {
   postID: string;
   status: Status;
   message: string;
-  submittedAt: FirebaseFirestore.Timestamp;
+  createdAt: FirebaseFirestore.Timestamp;
 }
