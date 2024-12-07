@@ -4,6 +4,7 @@ import './Auth.css';
 import { auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { setPersistence, browserLocalPersistence } from 'firebase/auth';
 
 const Auth = ({ mode }) => {
   const navigate = useNavigate();
@@ -58,67 +59,75 @@ const Auth = ({ mode }) => {
       }
     }
   };
-  const handleGoogleSignIn = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
   
-      const payload = {
-        userEmail: user.email,
-        provider: 'google',
-        signInDate: new Date().toISOString(),
-        userID: user.uid,
-      };
-  
-      const response = await fetch(`${BACKEND_URL}/signin`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-  
-      if (response.ok) {
-        setMessage(`Welcome, ${user.displayName}! Redirecting to home...`);
-        setTimeout(() => navigate('/'), 3000); // Redirect after successful sign-in
-      } else {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to sign in with Google.');
-      }
-    } catch (error) {
-      setMessage(`Error: ${error.message}`);
+
+const handleGoogleSignIn = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    // Ensure all required fields are included
+    const payload = {
+      userEmail: user.email,
+      provider: 'google',
+      signInDate: new Date().toISOString(),
+      userID: user.uid,
+    };
+
+    // Send payload to backend
+    const response = await fetch(`${BACKEND_URL}/signin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      setMessage(`Welcome, ${user.displayName}! Redirecting to home...`);
+      setTimeout(() => navigate('/'), 3000); // Redirect after successful sign-in
+    } else {
+      const data = await response.json();
+      throw new Error(data.message || 'Failed to sign in with Google.');
     }
-  };
-  const handleSignIn = async () => {
-    try {
-      // Firebase Authentication with email and password
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-  
-      // Send data to backend (optional)
-      const payload = {
-        userEmail: user.email,
-        provider: 'email',
-        signInDate: new Date().toISOString(),
-        userID: user.uid,
-      };
-  
-      const response = await fetch(`${BACKEND_URL}/signin`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-  
-      if (response.ok) {
-        setMessage('Sign In successful! Redirecting...');
-        setTimeout(() => navigate('/'), 3000); // Redirect after successful sign-in
-      } else {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to sign in.');
-      }
-    } catch (error) {
-      setMessage(`Error: ${error.message}`);
+  } catch (error) {
+    setMessage(`Error: ${error.message}`);
+  }
+};
+
+const handleSignIn = async () => {
+  try {
+    // Set persistence before signing in
+    await setPersistence(auth, browserLocalPersistence); // Change to browserSessionPersistence or 'none' if needed
+
+    // Firebase Authentication with email and password
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Send data to backend (optional)
+    const payload = {
+      userEmail: user.email,
+      provider: 'email',
+      signInDate: new Date().toISOString(),
+      userID: user.uid,
+    };
+
+    const response = await fetch(`${BACKEND_URL}/signin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      setMessage('Sign In successful! Redirecting...');
+      setTimeout(() => navigate('/'), 3000); // Redirect after successful sign-in
+    } else {
+      const data = await response.json();
+      throw new Error(data.message || 'Failed to sign in.');
     }
-  };
+  } catch (error) {
+    setMessage(`Error: ${error.message}`);
+  }
+};
   return (
     <div className="auth-container">
       <div className="auth-card">
