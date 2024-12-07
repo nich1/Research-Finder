@@ -8,6 +8,7 @@ import Header from './components/Header';
 import SearchResults from './components/SearchResults';
 import Footer from './components/Footer'; // Import the Footer component
 
+
 function App() {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/signin" element={<Auth mode="signin" />} />
+
             <Route path="/register" element={<Auth mode="register" />} />
             <Route path="/feed" element={<Feed />} />
             <Route path="/search" element={<SearchResults />} /> {/* Search Results Route */}
