@@ -11,10 +11,9 @@ import { auth } from './config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 // Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const [user] = useAuthState(auth);
+const ProtectedRoute = ({ user, children }) => {
   if (!user) {
-    return <Navigate to="/signin" />;
+    return <Navigate to="/signin" />; // Redirect to Sign In page if user is not authenticated
   }
   return children;
 };
@@ -24,8 +23,8 @@ function App() {
 
   useEffect(() => {
     // Monitor auth state changes
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user); // Set user state when auth state changes
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser); // Set user state when auth state changes
     });
     return () => unsubscribe(); // Cleanup subscription
   }, []);
@@ -57,7 +56,7 @@ function App() {
             <Route
               path="/user"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute user={user}>
                   <UserPage />
                 </ProtectedRoute>
               }
@@ -65,7 +64,7 @@ function App() {
             <Route
               path="/feed"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute user={user}>
                   <Feed />
                 </ProtectedRoute>
               }

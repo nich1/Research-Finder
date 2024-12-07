@@ -44,6 +44,12 @@ function Header({ user, onSignOut }) {
           <>
             <span className="user-email">Welcome, {user.email}</span> {/* Show user email */}
             <button
+              className="btn user-page-button"
+              onClick={() => navigate('/user')} // Navigate to User Page
+            >
+              User Page
+            </button>
+            <button
               className="btn sign-out-button"
               onClick={handleSignOut}
             >
