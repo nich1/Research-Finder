@@ -36,10 +36,14 @@ router.post('/applications', async (req: Request, res: Response) => {
     const postData = postSnapshot.data();
 
     const postTitle = postData?.title;
-    const researcherId = postData?.researcherId;
+    const researcherId = postData?.researcherID;
 
-    if (!postTitle || !researcherId) {
-      return res.status(400).json({ error: `Post title (${postTitle}) or researcher ID (${researcherId}) is missing in the post document` });
+    if (!postTitle ) {
+      return res.status(400).json({ error: `Post title (${postTitle})  is missing in the post document` });
+    }
+
+    if ( !researcherId) {
+      return res.status(400).json({ error: `Research ID (${researcherId})  is missing in the post document` });
     }
 
     const applicationRef = db.collection('applications').doc();
