@@ -110,6 +110,8 @@ router.get('/applications/message/:applicationId', async (req: Request, res: Res
       return res.status(404).json({ error: 'Message not found for this application' });
     }
 
+
+
     // Respond with the message
     res.status(200).json({ message: applicationData.message });
   } catch (error) {
@@ -142,12 +144,56 @@ router.put('/applications/status', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Application not found' });
     }
 
-    // Update the status of the application
+    const applicationData = applicationSnapshot.data();
+    if (!applicationData) {
+      return res.status(500).json({ error: 'Application data is missing' });
+    }
+
+    // Fetch the post data to get the title and researcherId
+    const postRef = db.collection('posts').doc(applicationData.postId);
+    const postSnapshot = await postRef.get();
+
+    if (!postSnapshot.exists) {
+      return res.status(404).json({ error: 'Associated post not found' });
+    }
+
+    const postData = postSnapshot.data();
+    const postTitle = postData?.title;
+    const researcherId = postData?.researcherId;
+
+    if (!researcherId || !postTitle) {
+      return res.status(400).json({ error: 'Post is missing necessary data (title or researcherId)' });
+    }
+
+    // Fetch the assistant data
+    const assistantRef = db.collection('assistants').doc(applicationData.assistantId);
+    const assistantSnapshot = await assistantRef.get();
+
+    if (!assistantSnapshot.exists) {
+      return res.status(404).json({ error: 'Assistant not found' });
+    }
+
+    const assistantData = assistantSnapshot.data();
+    const assistantFirstName = assistantData?.firstName;
+
+    if (!assistantFirstName) {
+      return res.status(400).json({ error: 'Assistant missing first name' });
+    }
+
+    // Update the application status
     await applicationRef.update({ applicationStatus: status });
-    res.status(200).json({ message: 'Application status updated successfully' });
+
+    // Notify the assistant by adding a message to their inbox
+    const inboxMessage = `Your application for "${postTitle}" was ${status}`;
+    const assistantInbox = assistantData?.inbox || [];
+    assistantInbox.push(inboxMessage);
+
+    await assistantRef.update({ inbox: assistantInbox });
+
+    res.status(200).json({ message: 'Application status updated and assistant notified successfully' });
   } catch (error) {
-    console.error(`Error updating application status: ${error}`, error);
-    res.status(500).json({ error: 'Failed to update application status' });
+    console.error('Error updating application status and notifying assistant:', error);
+    res.status(500).json({ error: 'Failed to update application status and notify assistant' });
   }
 });
 
