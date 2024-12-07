@@ -84,6 +84,41 @@ router.post('/applications', async (req: Request, res: Response) => {
 
 });
 
+// Route to get the message of an application by applicationId
+router.get('/applications/message/:applicationId', async (req: Request, res: Response) => {
+  try {
+    const { applicationId } = req.params;
+
+    // Validate applicationId
+    if (!applicationId) {
+      return res.status(400).json({ error: 'Application ID is required' });
+    }
+
+    // Fetch the application document
+    const applicationRef = db.collection('applications').doc(applicationId);
+    const applicationSnapshot = await applicationRef.get();
+
+    // Check if the application exists
+    if (!applicationSnapshot.exists) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+
+    // Retrieve the application data
+    const applicationData = applicationSnapshot.data();
+
+    if (!applicationData || !applicationData.message) {
+      return res.status(404).json({ error: 'Message not found for this application' });
+    }
+
+    // Respond with the message
+    res.status(200).json({ message: applicationData.message });
+  } catch (error) {
+    console.error('Error retrieving application message:', error);
+    res.status(500).json({ error: 'Failed to retrieve application message' });
+  }
+});
+
+
 // Route to update application status
 router.put('/applications/status', async (req: Request, res: Response) => {
   try {
