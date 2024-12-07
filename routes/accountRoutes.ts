@@ -20,8 +20,9 @@ router.post('/register', async (req: Request, res: Response) => {
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
-    const docRef = db.collection('accounts').doc();
-    await docRef.set(accountData);
+    // Use userID as document ID to avoid duplicate accounts
+    const docRef = db.collection('accounts').doc(userID);
+    await docRef.set(accountData, { merge: true }); // Merge to avoid overwriting existing data
 
     res.status(201).json({
       message: 'Account registered successfully.',
@@ -34,11 +35,11 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 });
 
-// Existing Sign In Route
+// POST route for sign in
 router.post('/signin', async (req: Request, res: Response) => {
-  const { userEmail, provider, creationDate, signInDate, userID, expirationDate } = req.body;
+  const { userEmail, provider, signInDate, userID } = req.body;
 
-  if (!userEmail || !provider || !creationDate || !signInDate || !userID) {
+  if (!userEmail || !provider || !signInDate || !userID) {
     return res.status(400).json({ message: 'Missing required fields.' });
   }
 
@@ -46,24 +47,22 @@ router.post('/signin', async (req: Request, res: Response) => {
     const accountData = {
       userEmail,
       provider,
-      creationDate,
       signInDate,
-      userID,
-      expirationDate: admin.firestore.Timestamp.fromDate(new Date(expirationDate)),
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      lastLoggedIn: admin.firestore.FieldValue.serverTimestamp(),
     };
 
-    const docRef = db.collection('accounts').doc();
-    await docRef.set(accountData);
+    // Update the account's last login time
+    const docRef = db.collection('accounts').doc(userID);
+    await docRef.set(accountData, { merge: true }); // Merge updates instead of overwriting
 
-    res.status(201).json({
+    res.status(200).json({
       message: 'Sign-in data saved successfully.',
       id: docRef.id,
       data: accountData,
     });
   } catch (error) {
     console.error('Error saving account data:', error);
-    res.status(500).send('Error saving account data');
+    res.status(500).json({ message: 'Error saving account data', error });
   }
 });
 
