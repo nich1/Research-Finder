@@ -159,7 +159,7 @@ router.put('/applications/status', async (req: Request, res: Response) => {
 
     const postData = postSnapshot.data();
     const postTitle = postData?.title;
-    const researcherId = postData?.researcherId;
+    const researcherId = postData?.researcherID;
 
     if (!researcherId || !postTitle) {
       return res.status(400).json({ error: 'Post is missing necessary data (title or researcherId)' });
