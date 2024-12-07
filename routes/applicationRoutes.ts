@@ -22,6 +22,11 @@ router.post('/applications', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Invalid Assistant ID' });
     }
     const assistantData = assistantSnapshot.data();
+    const assistantFirstName = assistantData?.firstName;
+
+    if (!assistantFirstName) {
+      return res.status(400).json({ error: 'Assistant first name is missing in the assistant document' });
+    }
 
     // Check if postId matches the name of a document in the Posts collection
     const postSnapshot = await db.collection('posts').doc(postId).get();
@@ -29,7 +34,13 @@ router.post('/applications', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Invalid Post ID' });
     }
     const postData = postSnapshot.data();
-//--
+
+    const postTitle = postData?.title;
+    const researcherId = postData?.researcherId;
+
+    if (!postTitle || !researcherId) {
+      return res.status(400).json({ error: 'Post title or researcher ID is missing in the post document' });
+    }
 
     const applicationRef = db.collection('applications').doc();
     const applicationId = applicationRef.id;
@@ -43,6 +54,22 @@ router.post('/applications', async (req: Request, res: Response) => {
     };
 
     await applicationRef.set(newApplication);
+
+    // Add a message to the researcher's inbox
+    const researcherRef = db.collection('researchers').doc(researcherId);
+    const researcherSnapshot = await researcherRef.get();
+
+    if (!researcherSnapshot.exists) {
+      return res.status(404).json({ error: 'Researcher not found' });
+    }
+
+    const researcherData = researcherSnapshot.data();
+    const inbox = researcherData?.inbox || [];
+    const notification = `${assistantFirstName} sent an application for ${postTitle}`;
+
+    inbox.push(notification);
+    await researcherRef.update({ inbox });
+
 
     res.status(201).json({ message: 'Application created successfully', applicationId });
   } catch (error) {
