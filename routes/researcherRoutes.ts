@@ -9,11 +9,10 @@ const router = express.Router();
 router.post('/researcher', async (req: Request, res: Response) => {
   try {
     const { firstName, lastName, sex, age, bio, email, password } = req.body;
-
+    console.log('Email being checked:', email);
     if (!firstName || !lastName || !sex || !bio || !email || !password) {
       return res.status(400).json({ error: 'All fields are required' });
     }
-
     // Check if email is already in use
     const existingAssistant = await db.collection('researchers').where('email', '==', email).get();
     if (!existingAssistant.empty) {
