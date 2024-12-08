@@ -109,12 +109,6 @@ const handleSignIn = async () => {
       provider: 'email',
       signInDate: new Date().toISOString(),
       userID: user.uid,
-      sex: male,
-      bio: 'quirky little liberal',
-      first: 'Job',
-      last: 'bald',
-      age : '25',
-      password: password,
     };
 
     const response = await fetch(`${BACKEND_URL}/signin`, {
