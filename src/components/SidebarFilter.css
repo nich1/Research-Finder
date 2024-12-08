@@ -1,31 +1,70 @@
 .sidebar {
-    background-color: #f7f7f7;
-    padding: 20px;
-    width: 250px;
-    border-right: 1px solid #ddd;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .sidebar h3 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar li {
-    margin: 10px 0;
-  }
-  
-  .sidebar input[type='checkbox'] {
-    margin-right: 10px;
-  }
-  
-  .sidebar label {
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
+  background-color: #ffffff;
+  padding: 20px;
+  width: 250px;
+  border-right: 1px solid #ddd;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.sidebar h3 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin: 15px 0;
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Push items to the edges */
+  align-items: center; /* Align text and checkbox vertically */
+}
+
+.sidebar input[type='checkbox'] {
+  margin-left: 12px; /* Add space between label and checkbox */
+  transform: scale(1.2); /* Slightly enlarge checkboxes */
+  cursor: pointer;
+}
+
+.sidebar label {
+  font-size: 1rem;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.sidebar label:hover {
+  color: #007bff; /* Highlight text on hover */
+}
+
+.sidebar li:hover {
+  background-color: #f1f1f1; /* Add hover effect to each filter item */
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.sidebar button {
+  margin-top: 20px;
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar button:hover {
+  background-color: #0056b3;
+}
