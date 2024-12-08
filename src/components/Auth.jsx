@@ -36,7 +36,7 @@ const Auth = ({ mode }) => {
         userID: user.uid,
       };
   
-      const response = await fetch(`${BACKEND_URL}/researchers`, {
+      const response = await fetch(`${BACKEND_URL}/researcher`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
