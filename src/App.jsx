@@ -63,14 +63,14 @@ function App() {
               }
             />
            
-<Route
+           <Route
   path="/AddPostForm"
   element={
     <ProtectedRoute user={user}>
       <AddPostForm researcherID={user?.uid} />
     </ProtectedRoute>
   }
-            />
+/>
             <Route
               path="/feed"
               element={

@@ -9,32 +9,33 @@ const SearchResults = () => {
   const [error, setError] = useState(null); // Add error state
 
   useEffect(() => {
-    const fetchSearchResults = async () => {
-      setLoading(true); // Set loading to true before fetching
-      setError(null); // Reset error state
-      try {
-        const response = await fetch(
-          `https://research-finder-server.vercel.app/search/posts?q=${encodeURIComponent(query)}`
-        );
+  const fetchSearchResults = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `https://research-finder-server.vercel.app/search/posts?q=${encodeURIComponent(query)}`
+      );
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch search results');
-        }
-
-        const data = await response.json();
-        setResults(data);
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-        setError('Failed to load search results. Please try again later.');
-      } finally {
-        setLoading(false); // Set loading to false after fetching
+      if (!response.ok) {
+        throw new Error(`Failed to fetch search results: ${response.statusText}`);
       }
-    };
 
-    if (query) {
-      fetchSearchResults();
+      const data = await response.json();
+      console.log('Fetched search results:', data); // Debugging
+      setResults(data);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+      setError(error.message || 'Failed to load search results. Please try again later.');
+    } finally {
+      setLoading(false);
     }
-  }, [query]);
+  };
+
+  if (query) {
+    fetchSearchResults();
+  }
+}, [query]);
 
   return (
     <div>
