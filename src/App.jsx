@@ -6,14 +6,15 @@ import Auth from './components/Auth';
 import Feed from './components/Feed';
 import Header from './components/Header';
 import SearchResults from './components/SearchResults';
-import Footer from './components/Footer'; // Import the Footer component
+import Footer from './components/Footer';
+import AddPostForm from './components/AddPostForm'; // Import AddPostForm component
 import { auth } from './config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 // Protected Route Component
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
-    return <Navigate to="/signin" />; // Redirect to Sign In page if user is not authenticated
+    return <Navigate to="/signin" replace />; // Redirect to Sign In page if user is not authenticated
   }
   return children;
 };
@@ -60,6 +61,15 @@ function App() {
                   <UserPage />
                 </ProtectedRoute>
               }
+            />
+           
+<Route
+  path="/AddPostForm"
+  element={
+    <ProtectedRoute user={user}>
+      <AddPostForm researcherID={user?.uid} />
+    </ProtectedRoute>
+  }
             />
             <Route
               path="/feed"

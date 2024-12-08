@@ -3,6 +3,7 @@ import './UserPage.css';
 import { auth } from '../config/firebase'; // Import Firebase Auth instance
 import { db } from '../config/firebase'; // Import Firestore database instance
 import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore functions
+import { Link } from 'react-router-dom'; // Import Link from React Router
 
 const UserPage = () => {
   const [user, setUser] = useState(null); // State for current user
@@ -65,6 +66,12 @@ const UserPage = () => {
             <p>Email: {user.email}</p>
             <p>Member since: {new Date(user.creationTime).toDateString()}</p>
           </section>
+          <section className="user-actions">
+            <h2>Actions</h2>
+            <Link to="/AddPostForm" className="action-link">
+  Add a New Post
+</Link>
+          </section>
           <section className="user-inbox">
             <h2>Inbox</h2>
             {loading && <p>Loading messages...</p>}
@@ -77,7 +84,9 @@ const UserPage = () => {
                 {messages.map((message) => (
                   <li key={message.id} className="inbox-message">
                     <strong>{message.sender}</strong>: {message.text}
-                    <p className="timestamp">{new Date(message.timestamp).toLocaleString()}</p>
+                    <p className="timestamp">
+                      {new Date(message.timestamp).toLocaleString()}
+                    </p>
                   </li>
                 ))}
               </ul>
