@@ -21,7 +21,7 @@
 }
 
 .auth-card h2 {
-  font-size: 1.8rem; /* Slightly larger for better readability */
+  font-size: 1.9rem; /* Slightly larger for better readability */
   margin-bottom: 15px;
   color: #333;
 }
@@ -51,7 +51,7 @@
 }
 
 .auth-google-button:hover {
-  background-color: #f0f0f0;
+  background-color: #000000;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
