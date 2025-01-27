@@ -1,7 +1,5 @@
 import express, { Request, Response } from 'express';
 import { db } from '../config/firebase';
-import bcrypt from 'bcrypt';
-import { Assistant, WorkType } from '../models/interfaces';
 
 const router = express.Router();
 
@@ -14,11 +12,6 @@ router.post('/assistant', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // Validate workType
-    if (!Object.values(WorkType).includes(workType)) {
-      return res.status(500).json({ error: 'Invalid workType' });
-    }
-
     // Check if email is already in use
     const existingAssistant = await db.collection('assistants').where('email', '==', email).get();
     if (!existingAssistant.empty) {
@@ -29,7 +22,7 @@ router.post('/assistant', async (req: Request, res: Response) => {
     const assistantRef = db.collection('assistants').doc();
     const assistantId = assistantRef.id;
 
-    const newAssistant: Assistant = {
+    const newAssistant = {
       firstName,
       lastName,
       age,
@@ -44,12 +37,31 @@ router.post('/assistant', async (req: Request, res: Response) => {
 
     res.status(201).json({ message: 'Assistant created successfully', assistantId });
   } catch (error) {
-    console.error(error);
+    console.error('Error creating assistant:', error);
     res.status(500).json({ error: 'Failed to create assistant' });
   }
 });
 
-// DELETE route to delete a assistant by ID
+// Route to get assistant details by user ID
+router.get('/assistant/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const assistantRef = db.collection('assistants').doc(id);
+    const assistantDoc = await assistantRef.get();
+
+    if (!assistantDoc.exists) {
+      return res.status(404).json({ error: 'Assistant not found' });
+    }
+
+    res.status(200).json(assistantDoc.data());
+  } catch (error) {
+    console.error('Error fetching assistant details:', error);
+    res.status(500).json({ error: 'Failed to fetch assistant details' });
+  }
+});
+
+// DELETE route to delete an assistant by ID
 router.delete('/assistant/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -58,12 +70,12 @@ router.delete('/assistant/:id', async (req: Request, res: Response) => {
     const assistantDoc = await assistantRef.get();
 
     if (!assistantDoc.exists) {
-      return res.status(404).json({ error: 'assistant not found' });
+      return res.status(404).json({ error: 'Assistant not found' });
     }
 
     await assistantRef.delete();
 
-    res.status(200).json({ message: 'assistant deleted successfully' });
+    res.status(200).json({ message: 'Assistant deleted successfully' });
   } catch (error) {
     console.error('Error deleting assistant:', error);
     res.status(500).json({ error: 'Failed to delete assistant' });
