@@ -1,68 +1,70 @@
 import express, { Request, Response } from 'express';
-import { admin, db } from '../config/firebase';
+import { db } from '../config/firebase';
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
-// POST route for registering a new account
-router.post('/register', async (req: Request, res: Response) => {
-  const { userEmail, provider, creationDate, userID } = req.body;
-
-  if (!userEmail || !provider || !creationDate || !userID) {
-    return res.status(400).json({ message: 'Missing required fields.' });
-  }
-
+// Route to create a new assistant
+router.post('/assistant', async (req: Request, res: Response) => {
   try {
-    const accountData = {
-      userEmail,
-      provider,
-      creationDate,
-      userID,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      isAdmin: false, // Default role is not admin
-      role: null, // Default role is undefined
+    const { firstName, lastName, sex, workType, age, bio, email, password } = req.body;
+
+    if (!firstName || !lastName || !sex || !bio || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Check if email is already in use
+    const existingAssistant = await db.collection('assistants').where('email', '==', email).get();
+    if (!existingAssistant.empty) {
+      return res.status(400).json({ error: 'Email is already in use' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const assistantRef = db.collection('assistants').doc();
+    const assistantId = assistantRef.id;
+
+    const newAssistant = {
+      firstName,
+      lastName,
+      age,
+      sex,
+      bio,
+      email,
+      workType,
+      password: hashedPassword,
     };
 
-    // Use userID as document ID to avoid duplicate accounts
-    const docRef = db.collection('accounts').doc(userID);
-    await docRef.set(accountData, { merge: true }); // Merge to avoid overwriting existing data
+    await assistantRef.set(newAssistant);
 
-    res.status(201).json({
-      message: 'Account registered successfully.',
-      id: docRef.id,
-      data: accountData,
-    });
+    res.status(201).json({ message: 'Assistant created successfully', assistantId });
   } catch (error) {
-    console.error('Error registering account:', error);
-    res.status(500).json({ message: 'Error registering account', error });
+    console.error('Error creating assistant:', error);
+    res.status(500).json({ error: 'Failed to create assistant' });
   }
 });
 
-// POST route for sign in
-router.post('/signin', async (req: Request, res: Response) => {
-  const { userEmail, provider, signInDate, userID } = req.body;
-
-  if (!userEmail || !provider || !signInDate || !userID) {
+// Route to handle authentication (register/sign in) for assistants
+router.post('/assistant/auth', async (req: Request, res: Response) => {
+  const { email, provider, signInDate, userID } = req.body;
+  if (!email || !provider || !signInDate || !userID) {
     return res.status(400).json({ message: 'Missing required fields.' });
   }
 
   try {
     const accountData = {
-      userEmail,
+      email,
       provider,
       signInDate,
-      lastLoggedIn: admin.firestore.FieldValue.serverTimestamp(),
+      lastLoggedIn: new Date().toISOString(),
     };
 
-    // Update the account's last login time
-    const docRef = db.collection('accounts').doc(userID);
-    await docRef.set(accountData, { merge: true }); // Merge updates instead of overwriting
-
-    const updatedDoc = await docRef.get();
+    const docRef = db.collection('assistants').doc(userID);
+    await docRef.set(accountData, { merge: true });
 
     res.status(200).json({
       message: 'Sign-in data saved successfully.',
       id: docRef.id,
-      data: updatedDoc.data(),
+      data: accountData,
     });
   } catch (error) {
     console.error('Error saving account data:', error);
@@ -70,52 +72,71 @@ router.post('/signin', async (req: Request, res: Response) => {
   }
 });
 
-// POST route to grant or revoke admin access
-router.post('/admin/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { isAdmin } = req.body;
-
-  if (typeof isAdmin !== 'boolean') {
-    return res.status(400).json({ error: 'isAdmin must be a boolean value' });
-  }
-
+// Route to create a new researcher
+router.post('/researcher', async (req: Request, res: Response) => {
   try {
-    // Reference to the account document
-    const accountRef = db.collection('accounts').doc(id);
-    const accountDoc = await accountRef.get();
+    const { firstName, lastName, sex, age, bio, email, password } = req.body;
 
-    if (!accountDoc.exists) {
-      return res.status(404).json({ error: 'Account not found' });
+    if (!firstName || !lastName || !sex || !bio || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // Update the isAdmin field
-    await accountRef.update({ isAdmin });
+    // Check if email is already in use
+    const existingResearcher = await db.collection('researchers').where('email', '==', email).get();
+    if (!existingResearcher.empty) {
+      return res.status(400).json({ error: 'Email is already in use' });
+    }
 
-    res.status(200).json({
-      message: `Admin access ${isAdmin ? 'granted' : 'revoked'} successfully.`,
-    });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const researcherRef = db.collection('researchers').doc();
+    const researcherId = researcherRef.id;
+
+    const newResearcher = {
+      firstName,
+      lastName,
+      age,
+      sex,
+      bio,
+      email,
+      password: hashedPassword,
+      posts: [],
+    };
+
+    await researcherRef.set(newResearcher);
+
+    res.status(201).json({ message: 'Researcher created successfully', researcherId });
   } catch (error) {
-    console.error('Error updating admin access:', error);
-    res.status(500).json({ error: 'Failed to update admin access' });
+    console.error('Error creating researcher:', error);
+    res.status(500).json({ error: 'Failed to create researcher' });
   }
 });
 
-// GET route to fetch account details by ID
-router.get('/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
+// Route to handle authentication (register/sign in) for researchers
+router.post('/researcher/auth', async (req: Request, res: Response) => {
+  const { email, provider, signInDate, userID } = req.body;
+  if (!email || !provider || !signInDate || !userID) {
+    return res.status(400).json({ message: 'Missing required fields.' });
+  }
 
   try {
-    const accountRef = db.collection('accounts').doc(id);
-    const accountDoc = await accountRef.get();
+    const accountData = {
+      email,
+      provider,
+      signInDate,
+      lastLoggedIn: new Date().toISOString(),
+    };
 
-    if (!accountDoc.exists) {
-      return res.status(404).json({ error: 'Account not found' });
-    }
+    const docRef = db.collection('researchers').doc(userID);
+    await docRef.set(accountData, { merge: true });
 
-    res.status(200).json(accountDoc.data());
+    res.status(200).json({
+      message: 'Sign-in data saved successfully.',
+      id: docRef.id,
+      data: accountData,
+    });
   } catch (error) {
-    console.error('Error fetching account data:', error);
-    res.status(500).json({ error: 'Failed to fetch account data' });
+    console.error('Error saving account data:', error);
+    res.status(500).json({ message: 'Error saving account data', error });
   }
 });
 
