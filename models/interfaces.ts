@@ -52,10 +52,3 @@ export interface Assistant {
   workType: WorkType;
 }
 
-export interface Application {
-  assistantID: string;
-  postID: string;
-  status: Status;
-  message: string;
-  createdAt: FirebaseFirestore.Timestamp;
-}
