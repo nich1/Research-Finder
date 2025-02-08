@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 
 // Use route files
 app.use('', researcherRoutes);
-app.use('', assistant);
+app.use('', assistantRoutes);
 app.use('', postRoutes);
 app.use('', accountRoutes);
 app.use('', searchRoutes);

@@ -5,24 +5,26 @@ import { Researcher } from '../models/interfaces';
 
 const router = express.Router();
 
-// Register a new Researcher
+// Route to create a new researcher
 router.post('/researcher', async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, sex, age, bio, email, password, userID } = req.body;
+        console.log('Email being checked:', email);
+    const { firstName, lastName, sex, age, bio, email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required.' });
+    if (!firstName || !lastName || !sex || !bio || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
     }
-
-    const existingResearcher = await db.collection('researchers').where('email', '==', email).get();
-    if (!existingResearcher.empty) {
+    // Check if email is already in use
+    const existingAssistant = await db.collection('researchers').where('email', '==', email).get();
+    if (!existingAssistant.empty) {
       return res.status(400).json({ error: 'Email is already in use' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const researcherRef = db.collection('researchers').doc(userID);
+    const researcherRef = db.collection('researchers').doc();
+    const researcherId = researcherRef.id;
 
-    const newResearcher = {
+    const newResearcher: Researcher = {
       firstName,
       lastName,
       age,
@@ -30,13 +32,14 @@ router.post('/researcher', async (req: Request, res: Response) => {
       bio,
       email,
       password: hashedPassword,
-      role: 'researcher',
       posts: [],
     };
 
     await researcherRef.set(newResearcher);
-    res.status(201).json({ message: 'Researcher created successfully!', userID });
+
+    res.status(201).json({ message: 'Researcher created successfully', researcherId });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to create researcher' });
   }
 });

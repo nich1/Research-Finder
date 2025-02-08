@@ -3,22 +3,24 @@ import { db } from '../config/firebase';
 
 const router = express.Router();
 
-// Register a new Assistant
+// Route to create a new assistant
 router.post('/assistant', async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, sex, age, bio, email, password, userID } = req.body;
+    const { firstName, lastName, sex, workType, age, bio, email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required.' });
+    if (!firstName || !lastName || !sex || !bio || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
     }
 
+    // Check if email is already in use
     const existingAssistant = await db.collection('assistants').where('email', '==', email).get();
     if (!existingAssistant.empty) {
       return res.status(400).json({ error: 'Email is already in use' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const assistantRef = db.collection('assistants').doc(userID);
+    const assistantRef = db.collection('assistants').doc();
+    const assistantId = assistantRef.id;
 
     const newAssistant = {
       firstName,
@@ -27,17 +29,18 @@ router.post('/assistant', async (req: Request, res: Response) => {
       sex,
       bio,
       email,
+      workType,
       password: hashedPassword,
-      role: 'assistant',
     };
 
     await assistantRef.set(newAssistant);
-    res.status(201).json({ message: 'Assistant created successfully!', userID });
+
+    res.status(201).json({ message: 'Assistant created successfully', assistantId });
   } catch (error) {
+    console.error('Error creating assistant:', error);
     res.status(500).json({ error: 'Failed to create assistant' });
   }
 });
-
 
 // Route to get assistant details by user ID
 router.get('/assistant/:id', async (req: Request, res: Response) => {
