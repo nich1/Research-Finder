@@ -9,7 +9,7 @@ const SearchBar = ({ onSearchResults }) => {
   };
 
   const handleSearch = async () => {
-    if (!query) return;
+    if (!query.trim()) return; // Prevent empty searches
 
     try {
       const response = await fetch(
@@ -27,6 +27,13 @@ const SearchBar = ({ onSearchResults }) => {
     }
   };
 
+  // Handle search when Enter key is pressed
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="home-header">
       <div className="search-container">
@@ -34,13 +41,12 @@ const SearchBar = ({ onSearchResults }) => {
           type="text"
           placeholder="Search for posts..."
           className="search-bar"
-          value={query} // Bind input to state
-          onChange={handleInputChange} // Update state on input change
+          value={query}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown} // Trigger search on Enter
+          aria-label="Search for posts"
         />
-        <button
-          className="search-button"
-          onClick={handleSearch} // Trigger search on click
-        >
+        <button className="search-button" onClick={handleSearch}>
           Search
         </button>
       </div>

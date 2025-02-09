@@ -1,11 +1,11 @@
 /* Updated CSS for Search Bar */
 .search-bar {
-  width: 70%; /* Increase the width to occupy more space */
-  max-width: 600px; /* Set a max width to prevent it from becoming too large */
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  width: 85%; /* Larger width */
+  max-width: 750px; /* Increased max width */
+  padding: 14px; /* Bigger padding for better UX */
+  font-size: 20px; /* Larger font size */
+  border: 2px solid #ccc;
+  border-radius: 8px; /* More rounded */
   background-color: white;
   color: blue;
   outline: none;
@@ -14,27 +14,26 @@
 
 .search-bar:focus {
   border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.6);
 }
 
 .search-container {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Align to the left */
-  gap: 10px; /* Space between the search bar and button */
-  flex-grow: 1; /* Allow the container to grow and take up available space */
+  justify-content: flex-start;
+  gap: 14px; /* More spacing */
+  flex-grow: 1;
 }
 
 .search-button, .btn {
-  padding: 8px 16px;
+  padding: 12px 24px; /* Larger button */
   background-color: #2E8B57; /* UNT green */
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   text-align: center;
-  font-size: 14px;
- 
+  font-size: 18px; /* Bigger button text */
 }
 
 .search-button:hover, .btn:hover {
@@ -43,12 +42,16 @@
   border-color: blue;
 }
 
-/* Center the Search Bar and Button Container */
-
-
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .search-bar {
-    width: 90%; /* Adjust width for smaller screens */
+    width: 95%;
+    font-size: 18px;
+    padding: 12px;
+  }
+
+  .search-button, .btn {
+    padding: 10px 20px;
+    font-size: 16px;
   }
 }
