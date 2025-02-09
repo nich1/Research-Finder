@@ -90,4 +90,3 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
 
 
 
-export default router;
