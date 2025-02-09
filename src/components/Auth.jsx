@@ -1,229 +1,115 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Auth.css';
 import { auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { setPersistence, browserLocalPersistence } from 'firebase/auth';
+import Terms from './Terms';
+
+import './Auth.css';
+import { Link } from 'react-router-dom';
 
 const Auth = ({ mode }) => {
   const navigate = useNavigate();
-  const isRegister = mode === 'register'; // Determine if it's Register or Sign In mode
+  const isRegister = mode === 'register';
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // For confirming passwords
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('assistant');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [message, setMessage] = useState('');
 
-  const BACKEND_URL = 'https://research-finder-server.vercel.app'; // Backend URL
+  const BACKEND_URL = 'https://research-finder-server.vercel.app';
 
-  // Handle Register
+  const validatePassword = (pwd) => {
+    return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(pwd);
+  };
+
   const handleRegister = async () => {
+    if (!agreedToTerms) {
+      setMessage('You must agree to the Terms and Conditions.');
+      return;
+    }
     if (password !== confirmPassword) {
       setMessage("Passwords don't match!");
       return;
     }
-  
+    if (!validatePassword(password)) {
+      setMessage('Password must be at least 8 characters, include one uppercase letter, one number, and one special character.');
+      return;
+    }
     try {
-      // Create user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-  
-      // Send user data to the backend
+
       const payload = {
-        userEmail: user.email,
-        provider: 'email',
-        creationDate: new Date().toISOString(),
+        firstName,
+        lastName,
+        email: user.email,
+        role,
+        age,
+        gender,
         userID: user.uid,
       };
-  
-      const response = await fetch(`${BACKEND_URL}/researcher`, {
+
+      const response = await fetch(`${BACKEND_URL}/assistant`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-  
+
       if (response.ok) {
-        setMessage('Account created successfully! Redirecting to home...');
-        setTimeout(() => navigate('/'), 3000); // Redirect after success
+        setMessage('Account created successfully! Redirecting...');
+        setTimeout(() => navigate('/signin'), 3000);
       } else {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to create account.');
+        throw new Error('Failed to create account.');
       }
     } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        setMessage(
-          'This email is already registered. Please sign in or use a different email address.'
-        );
-      } else {
-        setMessage(`Error: ${error.message}`);
-      }
+      setMessage(`Error: ${error.message}`);
     }
   };
-  
 
-const handleGoogleSignIn = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-
-    // Ensure all required fields are included
-    const payload = {
-      userEmail: user.email,
-      provider: 'google',
-      signInDate: new Date().toISOString(),
-      userID: user.uid,
-    };
-
-    // Send payload to backend
-    const response = await fetch(`${BACKEND_URL}/signin`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (response.ok) {
-      setMessage(`Welcome, ${user.displayName}! Redirecting to home...`);
-      setTimeout(() => navigate('/'), 3000); // Redirect after successful sign-in
-    } else {
-      const data = await response.json();
-      throw new Error(data.message || 'Failed to sign in with Google.');
-    }
-  } catch (error) {
-    setMessage(`Error: ${error.message}`);
-  }
-};
-
-const handleSignIn = async () => {
-  try {
-    // Set persistence before signing in
-    await setPersistence(auth, browserLocalPersistence); // Change to browserSessionPersistence or 'none' if needed
-
-    // Firebase Authentication with email and password
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    // Send data to backend (optional)
-    const payload = {
-      userEmail: user.email,
-      provider: 'email',
-      signInDate: new Date().toISOString(),
-      userID: user.uid,
-    };
-
-    const response = await fetch(`${BACKEND_URL}/signin`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (response.ok) {
-      setMessage('Sign In successful! Redirecting...');
-      setTimeout(() => navigate('/'), 3000); // Redirect after successful sign-in
-    } else {
-      const data = await response.json();
-      throw new Error(data.message || 'Failed to sign in.');
-    }
-  } catch (error) {
-    setMessage(`Error: ${error.message}`);
-  }
-};
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>{isRegister ? 'Register' : 'Sign In'}</h2>
-        <p>Welcome! Please {isRegister ? 'register' : 'sign in'} to continue.</p>
+        <h2>Register</h2>
+        <p>Welcome! Please register to continue.</p>
 
-        {isRegister ? (
-          <>
-            {/* Registration Form */}
-            <button className="auth-google-button" onClick={handleGoogleSignIn}>
-              <img
-                src="/assets/google-icon.png"
-                alt="Google icon"
-                className="google-icon"
-              />
-              Register with Google
-            </button>
-            <div className="auth-divider">
-              <span>or</span>
-            </div>
-            <input
-              type="email"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Create Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <button className="auth-submit-button" onClick={handleRegister}>
-              Register
-            </button>
-          </>
-        ) : (
-          <>
-            {/* Sign In Form */}
-            <button className="auth-google-button" onClick={handleGoogleSignIn}>
-              <img
-                src="/assets/google-icon.png"
-                alt="Google icon"
-                className="google-icon"
-              />
-              Sign In with Google
-            </button>
-            <div className="auth-divider">
-              <span>or</span>
-            </div>
-            <input
-              type="email"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button className="auth-submit-button" onClick={handleSignIn}>
-              Sign In
-            </button>
-          </>
-        )}
+        <>
+          <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+          <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <select value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="assistant">Assistant</option>
+            <option value="researcher">Researcher</option>
+          </select>
+          <input type="number" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} required />
+          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          <label>
+  <input type="checkbox" checked={agreedToTerms} onChange={() => setAgreedToTerms(!agreedToTerms)} />
+  I agree to the <Link to="/terms">Terms of Service</Link> and Conditions
+</label>
+          <button className="auth-submit-button" onClick={handleRegister}>Register</button>
+        </>
 
-        {/* Display Message */}
         <p className="auth-message">{message}</p>
 
-        {/* Toggle between Register and Sign In */}
         <p className="auth-toggle">
-          {isRegister
-            ? 'Already have an account?'
-            : "Don't have an account?"}{' '}
-          <a href={isRegister ? '/signin' : '/register'}>
-            {isRegister ? 'Sign In' : 'Register'}
-          </a>
+          Already have an account? <a href="/signin">Sign In</a>
         </p>
 
-        {/* Return to Home */}
-        <button className="auth-return-home" onClick={() => navigate('/')}>
-          Return to Home Page
-        </button>
+        <button className="auth-return-home" onClick={() => navigate('/')}>Return to Home Page</button>
       </div>
     </div>
   );

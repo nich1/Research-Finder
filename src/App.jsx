@@ -3,18 +3,19 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './components/Home';
 import UserPage from './components/UserPage';
 import Auth from './components/Auth';
+import SignIn from './components/SignIn';
 import Feed from './components/Feed';
 import Header from './components/Header';
 import SearchResults from './components/SearchResults';
 import Footer from './components/Footer';
-import AddPostForm from './components/AddPostForm'; // Import AddPostForm component
+import AddPostForm from './components/AddPostForm';
 import { auth } from './config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import Terms from './components/Terms'; // Import Terms Component
 
-// Protected Route Component
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
-    return <Navigate to="/signin" replace />; // Redirect to Sign In page if user is not authenticated
+    return <Navigate to="/signin" replace />;
   }
   return children;
 };
@@ -23,18 +24,17 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Monitor auth state changes
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser); // Set user state when auth state changes
+      setUser(currentUser);
     });
-    return () => unsubscribe(); // Cleanup subscription
+    return () => unsubscribe();
   }, []);
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
       console.log('User signed out.');
-      setUser(null); // Clear user state after signing out
+      setUser(null);
     } catch (error) {
       console.error('Error signing out:', error.message);
     }
@@ -43,17 +43,15 @@ function App() {
   return (
     <Router>
       <div>
-        {/* Header Component */}
-        <Header user={user} onSignOut={handleSignOut} /> {/* Pass user and sign-out handler */}
+        <Header user={user} onSignOut={handleSignOut} />
 
         <main style={{ padding: '20px' }}>
-          {/* Routes Configuration */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/signin" element={<Auth mode="signin" />} />
+            <Route path="/signin" element={<SignIn />} />
             <Route path="/register" element={<Auth mode="register" />} />
+            <Route path="/terms" element={<Terms />} />  
 
-            {/* Protected Routes */}
             <Route
               path="/user"
               element={
@@ -62,15 +60,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-           
-           <Route
-  path="/AddPostForm"
-  element={
-    <ProtectedRoute user={user}>
-      <AddPostForm researcherID={user?.uid} />
-    </ProtectedRoute>
-  }
-/>
+            <Route
+              path="/AddPostForm"
+              element={
+                <ProtectedRoute user={user}>
+                  <AddPostForm researcherID={user?.uid} />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/feed"
               element={
@@ -83,7 +80,6 @@ function App() {
           </Routes>
         </main>
 
-        {/* Footer Component */}
         <Footer />
       </div>
     </Router>
