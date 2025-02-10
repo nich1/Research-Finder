@@ -1,4 +1,19 @@
 /* Updated CSS for Search Bar */
+
+.search-button {
+
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  padding-right: 40px;
+
+}
+
+.search-icon {
+  width: 28px;  /* Adjust size as needed */
+  height: 28px;
+}
+
 .search-bar {
   width: 85%; /* Larger width */
   max-width: 750px; /* Increased max width */
@@ -7,51 +22,23 @@
   border: 2px solid #ccc;
   border-radius: 8px; /* More rounded */
   background-color: white;
-  color: blue;
+  color: black;
   outline: none;
   transition: all 0.3s ease;
 }
 
-.search-bar:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.6);
-}
+
 
 .search-container {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 14px; /* More spacing */
-  flex-grow: 1;
+
+    width: 100%;
+    max-width: 500px;
 }
 
-.search-button, .btn {
-  padding: 12px 24px; /* Larger button */
-  background-color: #2E8B57; /* UNT green */
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  text-align: center;
-  font-size: 18px; /* Bigger button text */
-}
 
-.search-button:hover, .btn:hover {
-  background-color: blue;
-  color: white;
-  border-color: blue;
-}
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .search-bar {
-    width: 95%;
-    font-size: 18px;
-    padding: 12px;
-  }
 
-  .search-button, .btn {
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-}
+
+

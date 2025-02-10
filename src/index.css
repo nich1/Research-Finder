@@ -8,10 +8,7 @@
     color: #222; /* Darker for better readability */
     background-color: #f4f4f4; /* Softer contrast */
 
-    /* Color-blind friendly color palette */
-    --primary-color: #0072B2; /* Blue (Good for most color-blind users) */
-    --secondary-color: #E69F00; /* Orange */
-    --accent-color: #56B4E9; /* Sky Blue */
+   
 }
 
 /* Improve default text readability */
@@ -37,19 +34,17 @@ a:hover {
 
 /* Buttons with better theme cohesion */
 button {
-    background: var(--primary-color);
+    background: none;
     color: white;
     font-weight: bold;
     padding: 10px 15px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    transition: background 0.3s;
+    transition:  0.3s;
 }
 
-button:hover {
-    background: var(--secondary-color);
-}
+
 
 /* Improve form inputs */
 input, textarea {
