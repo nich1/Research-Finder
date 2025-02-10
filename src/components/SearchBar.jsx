@@ -24,7 +24,7 @@ const SearchBar = ({ onSearchResults }) => {
     }
 
     const results = await response.json();
-    onSearchResults(results); // Update parent with new results
+    onSearchResults(results); // Update parent with new results cool tests
   } catch (error) {
     console.error('Error searching posts:', error);
   }
