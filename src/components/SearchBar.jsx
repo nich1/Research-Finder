@@ -8,24 +8,28 @@ const SearchBar = ({ onSearchResults }) => {
     setQuery(event.target.value);
   };
 
-  const handleSearch = async () => {
-    if (!query.trim()) return; // Prevent empty searches
+ const handleSearch = async () => {
+  if (!query.trim()) return; // Prevent empty searches
 
-    try {
-      const response = await fetch(
-        `https://research-finder-server.vercel.app/search/posts?q=${encodeURIComponent(query)}`
-      );
+  // Clear previous results immediately
+  onSearchResults([]); 
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch search results');
-      }
+  try {
+    const response = await fetch(
+      `https://research-finder-server.vercel.app/search/posts?q=${encodeURIComponent(query)}`
+    );
 
-      const results = await response.json();
-      onSearchResults(results); // Pass results to the parent component
-    } catch (error) {
-      console.error('Error searching posts:', error);
+    if (!response.ok) {
+      throw new Error('Failed to fetch search results');
     }
-  };
+
+    const results = await response.json();
+    onSearchResults(results); // Update parent with new results
+  } catch (error) {
+    console.error('Error searching posts:', error);
+  }
+};
+
 
   // Handle search when Enter key is pressed
   const handleKeyDown = (event) => {
