@@ -53,22 +53,28 @@ const Auth = ({ mode }) => {
       setMessage('Password must be at least 8 characters, include one uppercase letter, one number, and one special character.');
       return;
     }
-
+  
     try {
+      // 🔹 Register the user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      await setDoc(doc(db, "assistants", user.uid), {
+  
+      // 🔹 Determine collection based on role selection
+      const collectionName = role === "researcher" ? "researchers" : "assistants";
+  
+      // 🔹 Save user details in the appropriate Firestore collection
+      await setDoc(doc(db, collectionName, user.uid), {
         firstName,
         lastName,
         email: user.email,
         role,
         age,
         gender,
+        bio: "",
         userID: user.uid,
       });
-
-      setMessage('Account created successfully! Redirecting...');
+  
+      setMessage(`Account created successfully as a ${role}! Redirecting...`);
       setTimeout(() => navigate('/dashboard'), 3000);
     } catch (error) {
       setMessage(`Error: ${error.message}`);
@@ -80,29 +86,37 @@ const Auth = ({ mode }) => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user;
-
-      const userRef = doc(db, "assistants", user.uid);
+  
+      // 🔹 Prompt user to select their role (Assistant or Researcher)
+      const selectedRole = window.confirm("Are you a Researcher? Click OK for Researcher, Cancel for Assistant")
+        ? "researcher"
+        : "assistant";
+  
+      // 🔹 Determine collection name based on role
+      const collectionName = selectedRole === "researcher" ? "researchers" : "assistants";
+  
+      // 🔹 Check if user already exists in Firestore
+      const userRef = doc(db, collectionName, user.uid);
       const userDoc = await getDoc(userRef);
-
+  
       if (!userDoc.exists()) {
         await setDoc(userRef, {
           firstName: user.displayName?.split(' ')[0] || "",
           lastName: user.displayName?.split(' ')[1] || "",
           email: user.email,
-          role: "assistant",
+          role: selectedRole,
           age: "",
           gender: "",
           userID: user.uid,
         });
       }
-
-      setMessage("Signed in with Google! Redirecting...");
+  
+      setMessage(`Signed in with Google as a ${selectedRole}! Redirecting...`);
       setTimeout(() => navigate('/dashboard'), 3000);
     } catch (error) {
       setMessage(`Google Sign-In Error: ${error.message}`);
     }
   };
-
   // 🔹 Login with Email & Password
   const handleLogin = async () => {
     try {
