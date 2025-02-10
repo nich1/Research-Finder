@@ -1,56 +1,73 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    font-weight: 400;
 
-  color-scheme: light dark;
-  color: #000; /* Changed to black for better contrast */
-  background-color: #f7f7f7; /* Changed to light background */
+    /* Improved theme with better accessibility */
+    color-scheme: light dark;
+    color: #222; /* Darker for better readability */
+    background-color: #f4f4f4; /* Softer contrast */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* Color-blind friendly color palette */
+    --primary-color: #0072B2; /* Blue (Good for most color-blind users) */
+    --secondary-color: #E69F00; /* Orange */
+    --accent-color: #56B4E9; /* Sky Blue */
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* Improve default text readability */
 body {
-  margin: 0;
-  display: block; /* Changed from flex to block to prevent global centering */
-  background-color: #f7f7f7; /* Matches Auth background */
-  min-width: 320px;
-  min-height: 100vh;
-  color: #333; /* Default font color for readability */
+    font-size: 16px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Make links stand out */
+a {
+    font-weight: 600;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
 }
 
+a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+/* Buttons with better theme cohesion */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+    background: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
 }
+
 button:hover {
-  border-color: #646cff;
+    background: var(--secondary-color);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+/* Improve form inputs */
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+    }
 }
