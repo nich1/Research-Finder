@@ -1,56 +1,94 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
 
+  /* Improved theme with better accessibility */
   color-scheme: light dark;
-  color: #000; /* Changed to black for better contrast */
-  background-color: #f7f7f7; /* Changed to light background */
+  color: #111; /* Stronger contrast */
+  background-color: #F2F2F2; /* Softer contrast */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Define accessible color variables */
+  --primary-color: #0055FF; /* Strong blue for contrast */
+  --secondary-color: #FF9900; /* Orange as an alternative highlight */
+  --button-bg: #0055FF;
+  --button-hover-bg: #0033AA;
+  --text-light: #FFFFFF;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* Improve default text readability */
 body {
-  margin: 0;
-  display: block; /* Changed from flex to block to prevent global centering */
-  background-color: #f7f7f7; /* Matches Auth background */
-  min-width: 320px;
-  min-height: 100vh;
-  color: #333; /* Default font color for readability */
+  font-size: 16px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  color: #111; /* High contrast */
+  background-color: #F2F2F2;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Improve readability for headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #000; /* Black for clarity */
 }
 
+/* Make links stand out and always visible */
+a {
+  font-weight: 600;
+  color: var(--primary-color);
+  text-decoration: underline; /* Underlined for color-blind users */
+  transition: all 0.3s ease-in-out;
+}
+
+a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* Buttons with improved accessibility */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background: var(--button-bg);
+  color: var(--text-light);
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background 0.3s;
 }
+
 button:hover {
-  border-color: #646cff;
+  background: var(--button-hover-bg);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+/* Add focus outlines for better keyboard navigation */
+button:focus, a:focus, input:focus, textarea:focus {
+  outline: 3px solid var(--secondary-color); /* Makes focus visible */
+}
+
+/* Improve form inputs */
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #888; /* Darker border for better visibility */
+  border-radius: 5px;
+  background-color: #FFF;
+  color: #111;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+      font-size: 14px;
+      padding: 15px;
+  }
+
+  button {
+      width: 100%;
+  }
 }
