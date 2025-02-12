@@ -5,10 +5,15 @@
 
     /* Improved theme with better accessibility */
     color-scheme: light dark;
-    color: #222; /* Darker for better readability */
-    background-color: #f4f4f4; /* Softer contrast */
+    color: #111; /* Stronger contrast */
+    background-color: #F2F2F2; /* Softer contrast */
 
-   
+    /* Define accessible color variables */
+    --primary-color: #0055FF; /* Strong blue for contrast */
+    --secondary-color: #FF9900; /* Orange as an alternative highlight */
+    --button-bg: #0055FF;
+    --button-hover-bg: #0033AA;
+    --text-light: #FFFFFF;
 }
 
 /* Improve default text readability */
@@ -17,13 +22,20 @@ body {
     max-width: 1200px;
     margin: auto;
     padding: 20px;
+    color: #111; /* High contrast */
+    background-color: #F2F2F2;
 }
 
-/* Make links stand out */
+/* Improve readability for headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #000; /* Black for clarity */
+}
+
+/* Make links stand out and always visible */
 a {
     font-weight: 600;
     color: var(--primary-color);
-    text-decoration: none;
+    text-decoration: underline; /* Underlined for color-blind users */
     transition: all 0.3s ease-in-out;
 }
 
@@ -32,27 +44,41 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Buttons with better theme cohesion */
+/* Buttons with improved accessibility */
 button {
-    background: none;
-    color: white;
+    background: var(--button-bg);
+    color: var(--text-light);
     font-weight: bold;
     padding: 10px 15px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    transition:  0.3s;
+    transition: background 0.3s;
 }
 
+button:hover {
+    background: var(--button-hover-bg);
+}
 
+/* Add focus outlines for better keyboard navigation */
+button:focus, a:focus, input:focus, textarea:focus {
+    outline: 3px solid var(--secondary-color); /* Makes focus visible */
+}
 
 /* Improve form inputs */
 input, textarea {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
-    border: 1px solid #ccc;
+    border: 1px solid #888; /* Darker border for better visibility */
     border-radius: 5px;
+    background-color: #FFF;
+    color: #111;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
 }
 
 /* Responsive Design */
@@ -66,3 +92,4 @@ input, textarea {
         width: 100%;
     }
 }
+
