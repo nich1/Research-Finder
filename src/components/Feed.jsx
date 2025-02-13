@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import FeedDisplay from './FeedDisplay';
+import './Feed.css'; // Ensure this file is included for styling
 
 function Feed() {
   const [posts, setPosts] = useState([]);
@@ -11,12 +12,21 @@ function Feed() {
       setLoading(true);
       setError(null);
 
-      try {
-        const response = await fetch('https://research-finder-server.vercel.app/posts');
+       try {
+        const response = await fetch('https://research-finder-server.vercel.app/posts'); // Fixed API URL
+        console.log("Fetching research posts...");
+    
         if (!response.ok) {
           throw new Error(`Error fetching posts: ${response.statusText}`);
         }
+    
         const data = await response.json();
+        console.log("Fetched posts:", data);
+    
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid data format: Expected an array");
+        }
+    
         setPosts(data);
       } catch (err) {
         console.error('Error fetching posts:', err);
@@ -25,7 +35,7 @@ function Feed() {
         setLoading(false);
       }
     };
-
+    
     fetchPosts();
   }, []);
 

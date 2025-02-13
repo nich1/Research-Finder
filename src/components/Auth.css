@@ -1,3 +1,4 @@
+/* General Container */
 .auth-container {
   display: flex;
   justify-content: center;
@@ -8,6 +9,7 @@
   box-sizing: border-box;
 }
 
+/* Authentication Card */
 .auth-card {
   background: white;
   width: 100%;
@@ -19,7 +21,7 @@
 }
 
 .auth-card h2 {
-  font-size: 1.8rem; /* Slightly larger for better readability */
+  font-size: 1.9rem; /* Slightly larger for better readability */
   margin-bottom: 15px;
   color: #333;
 }
@@ -30,6 +32,7 @@
   margin-bottom: 20px;
 }
 
+/* Google Sign-In Button */
 .auth-google-button {
   display: flex;
   align-items: center;
@@ -39,7 +42,7 @@
   margin: 15px 0;
   background-color: white;
   border: 1px solid #ddd;
-  border-radius: 6px; /* Slightly rounder corners */
+  border-radius: 6px;
   color: #555;
   font-size: 1rem;
   font-weight: 600; /* Bolder text for emphasis */
@@ -48,7 +51,7 @@
 }
 
 .auth-google-button:hover {
-  background-color: #f0f0f0;
+  background-color: #000000;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
@@ -58,6 +61,7 @@
   margin-right: 10px;
 }
 
+/* Divider */
 .auth-divider {
   display: flex;
   align-items: center;
@@ -78,6 +82,7 @@
   background: #ddd;
 }
 
+/* Input Fields */
 input[type='email'],
 input[type='password'] {
   width: 100%;
@@ -96,6 +101,7 @@ input[type='password']:focus {
   box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
 }
 
+/* Submit Button */
 .auth-submit-button {
   width: 100%;
   padding: 12px 0;
@@ -114,12 +120,14 @@ input[type='password']:focus {
   background-color: #0056b3;
 }
 
+/* Success/Error Messages */
 .auth-message {
   font-size: 1rem; /* Improved readability */
   color: #28a745; /* Green for success messages */
   margin-top: 10px;
 }
 
+/* Toggle Between Register/Sign In */
 .auth-toggle {
   margin-top: 25px;
   font-size: 1rem;
@@ -136,6 +144,7 @@ input[type='password']:focus {
   color: #0056b3;
 }
 
+/* Return to Home Button */
 .auth-return-home {
   width: 100%;
   padding: 12px 0;

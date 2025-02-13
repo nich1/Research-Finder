@@ -2,7 +2,7 @@
   font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.6;
   font-weight: 400;
-
+  
   /* Improved theme with better accessibility */
   color-scheme: light dark;
   color: #111; /* Stronger contrast */
@@ -12,7 +12,7 @@
   --primary-color: #0055FF; /* Strong blue for contrast */
   --secondary-color: #FF9900; /* Orange as an alternative highlight */
   --button-bg: #0055FF;
-  --button-hover-bg: #0033AA;
+  --button-hover: #0033AA;
   --text-light: #FFFFFF;
 }
 
@@ -26,16 +26,17 @@ body {
   background-color: #F2F2F2;
 }
 
-/* Improve readability for headings */
+/* Ensure all text is legible */
 h1, h2, h3, h4, h5, h6 {
-  color: #000; /* Black for clarity */
+  color: black;
+  font-weight: bold;
 }
 
-/* Make links stand out and always visible */
+/* Make links clear and always visible */
 a {
   font-weight: 600;
   color: var(--primary-color);
-  text-decoration: underline; /* Underlined for color-blind users */
+  text-decoration: underline;
   transition: all 0.3s ease-in-out;
 }
 
@@ -53,24 +54,23 @@ button {
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease-in-out;
 }
 
 button:hover {
-  background: var(--button-hover-bg);
+  background: var(--button-hover);
 }
 
 /* Add focus outlines for better keyboard navigation */
 button:focus, a:focus, input:focus, textarea:focus {
-  outline: 3px solid var(--secondary-color); /* Makes focus visible */
+  outline: 3px solid var(--secondary-color);
 }
 
 /* Improve form inputs */
 input, textarea {
   width: 100%;
   padding: 10px;
-  margin: 5px 0;
-  border: 1px solid #888; /* Darker border for better visibility */
+  border: 1px solid #888;
   border-radius: 5px;
   background-color: #FFF;
   color: #111;
@@ -92,3 +92,4 @@ input:focus, textarea:focus {
       width: 100%;
   }
 }
+

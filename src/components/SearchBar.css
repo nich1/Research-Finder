@@ -1,0 +1,44 @@
+/* Updated CSS for Search Bar */
+
+.search-button {
+
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  padding-right: 40px;
+
+}
+
+.search-icon {
+  width: 28px;  /* Adjust size as needed */
+  height: 28px;
+}
+
+.search-bar {
+  width: 85%; /* Larger width */
+  max-width: 750px; /* Increased max width */
+  padding: 14px; /* Bigger padding for better UX */
+  font-size: 20px; /* Larger font size */
+  border: 2px solid #ccc;
+  border-radius: 8px; /* More rounded */
+  background-color: white;
+  color: black;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+
+
+.search-container {
+  display: flex;
+  align-items: center;
+
+    width: 100%;
+    max-width: 500px;
+}
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #004d00;
+  color: white;
+}
+
+.logo {
+  flex-shrink: 0; /* Prevent the logo from shrinking */
+  margin-right: 20px; /* Add space between the logo and search bar */
+}
+
+.header-buttons .btn {
+  min-width: 100px; /* Ensures all buttons have the same width */
+  height: 40px; /* Ensures all buttons have the same height */
+  font-size: 16px; /* Ensures text is the same size */
+  text-align: center;
+  border: 2px solid transparent; /* Ensures equal border thickness */
+  border-radius: 5px; /* Consistent rounded corners */
+  background-color: #2E8B57; /* UNT Green */
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+
+
+/* If the "Home" button has extra styling, reset it */
+.header-buttons .home-button {
+  border: 2px solid transparent; /* Removes outline difference */
+}
+
+/* Ensure buttons are displayed inline properly */
+.header-buttons {
+  display: flex;
+  gap: 10px; /* Adds space between buttons */
+  align-items: center;
+}
