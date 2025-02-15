@@ -28,7 +28,6 @@ function Header({ user, onSignOut }) {
   return (
     <header className="home-header">
       <h1>Research Finder App</h1>
-
       <SearchBar onSearch={handleSearch} /> {/* Primary SearchBar */}
 
       <div className="header-buttons">

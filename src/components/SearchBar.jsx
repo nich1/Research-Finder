@@ -1,4 +1,5 @@
 import './SearchBar.css';
+import searchIcon from '../assets/search.png'
 import React, { useState } from 'react';
 
 const SearchBar = ({ onSearchResults }) => {
@@ -24,7 +25,7 @@ const SearchBar = ({ onSearchResults }) => {
     }
 
     const results = await response.json();
-    onSearchResults(results); // Update parent with new results
+    onSearchResults(results); // Update parent with new results cool tests
   } catch (error) {
     console.error('Error searching posts:', error);
   }
@@ -39,7 +40,7 @@ const SearchBar = ({ onSearchResults }) => {
   };
 
   return (
-    <div className="home-header">
+   
       <div className="search-container">
         <input
           type="text"
@@ -49,12 +50,12 @@ const SearchBar = ({ onSearchResults }) => {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown} // Trigger search on Enter
           aria-label="Search for posts"
-        />
+                />
         <button className="search-button" onClick={handleSearch}>
-          Search
+          <img src={searchIcon} alt="Search" className='search-icon'/>
         </button>
       </div>
-    </div>
+   
   );
 };
 

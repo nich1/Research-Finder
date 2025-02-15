@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: #004d00;
   color: white;
 }
@@ -15,7 +16,6 @@
 .header-buttons .btn {
   min-width: 100px; /* Ensures all buttons have the same width */
   height: 40px; /* Ensures all buttons have the same height */
-  padding: 10px 15px; /* Adds consistent padding */
   font-size: 16px; /* Ensures text is the same size */
   text-align: center;
   border: 2px solid transparent; /* Ensures equal border thickness */
@@ -26,11 +26,7 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Ensures hover effect is uniform */
-.header-buttons .btn:hover {
-  background-color: blue;
-  border-color: blue;
-}
+
 
 /* If the "Home" button has extra styling, reset it */
 .header-buttons .home-button {

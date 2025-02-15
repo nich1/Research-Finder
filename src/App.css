@@ -2,21 +2,59 @@
 
 /* Center the entire app container */
 .app-container {
-  display: flex; /* Enables flex layout */
-  flex-direction: column; /* Stacks children vertically */
-  align-items: center; /* Centers items horizontally */
-  justify-content: center; /* Centers items vertically */
-  text-align: center; /* Centers text within the container */
-  min-height: 100vh; /* Ensures the container takes up the full viewport height */
-  padding: 20px; /* Adds padding around the container */
-  box-sizing: border-box; /* Includes padding in the element's total width/height */
+    display: flex; /* Enables flex layout */
+    flex-direction: column; /* Stacks children vertically */
+    align-items: center; /* Centers items horizontally */
+    justify-content: center; /* Centers items vertically */
+    text-align: center; /* Centers text within the container */
+    min-height: 100vh; /* Ensures the container takes up the full viewport height */
+    padding: 20px; /* Adds padding around the container */
+    box-sizing: border-box; /* Includes padding in the element's total width/height */
 }
 
 /* Overall page styling */
 body {
-  background-color: #e9f3ee; /* UNT green as background for the entire page */
-  color: white; /* White text color for general readability */
-  font-family: Arial, sans-serif; /* Sets the font for the entire page */
-  margin: 0; /* Removes default margin */
-  padding: 0; /* Removes default padding */
+    background-color: #f4f4f4; /* Softer, neutral background */
+    color: #222; /* Darker text for better contrast */
+    font-family: 'Inter', Arial, sans-serif; /* Modern, readable font */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
+}
+
+/* Buttons */
+button {
+    background: #0072B2; /* Accessible blue */
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #E69F00; /* Orange for hover effect */
+}
+
+/* Links */
+a {
+    color: #0072B2;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    color: #E69F00;
+    text-decoration: underline;
+}
+
+/* Forms */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
