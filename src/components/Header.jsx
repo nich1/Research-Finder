@@ -9,9 +9,8 @@ function Header({ user, onSignOut }) {
   const navigate = useNavigate();
 
   const handleSearch = (searchQuery) => {
-    if (searchQuery.trim() !== '') {
       navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
-    }
+      
   };
 
   // Sign Out Handler
