@@ -12,6 +12,10 @@ import AddPostForm from './components/AddPostForm';
 import { auth } from './config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import Terms from './components/Terms'; // Import Terms Component
+import AdminDashboard from './components/AdminDashboard';
+
+
+
 
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
@@ -51,6 +55,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/register" element={<Auth mode="register" />} />
             <Route path="/terms" element={<Terms />} />  
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
             <Route
               path="/user"

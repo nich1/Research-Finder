@@ -2,6 +2,12 @@ import React from 'react';
 import './FeedDisplay.css';
 
 const FeedDisplay = ({ data }) => {
+  console.log('FeedDisplay received data:', data); // Debugging
+
+  if (!data) {
+    return <p>No data available.</p>;
+  }
+
   const { title, body, compensation, organization, researcherName, workType } = data;
 
   return (
