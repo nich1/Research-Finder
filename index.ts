@@ -28,7 +28,6 @@ app.get('/', (req, res) => {
 app.use('', researcherRoutes);
 app.use('', assistantRoutes);
 app.use('', postRoutes);
-app.use('', accountRoutes);
 app.use('', searchRoutes);
 app.use('', applicationRoutes);
 
