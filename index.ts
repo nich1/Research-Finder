@@ -1,10 +1,9 @@
 import express, { Request, Response } from 'express';
-import cors from 'cors';
+const cors = require('cors');
 import researcherRoutes from './routes/researcherRoutes';
 import assistantRoutes from './routes/assistantRoutes';
 import postRoutes from './routes/postRoutes';
 import applicationRoutes from './routes/applicationRoutes';
-import accountRoutes from './routes/accountRoutes';
 import searchRoutes from './routes/searchRoutes';
 import adminRoutes from './routes/adminRoutes'; 
 import { isAdminMiddleware } from './middleware'; 
@@ -31,7 +30,6 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/researchers', researcherRoutes);
 app.use('/assistants', assistantRoutes);
 app.use('/posts', postRoutes);
-app.use('/accounts', accountRoutes);
 app.use('/search', searchRoutes);
 app.use('/applications', applicationRoutes);
 
