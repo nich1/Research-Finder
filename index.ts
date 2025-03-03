@@ -6,7 +6,7 @@ import postRoutes from './routes/postRoutes';
 import applicationRoutes from './routes/applicationRoutes';
 import searchRoutes from './routes/searchRoutes';
 import adminRoutes from './routes/adminRoutes'; 
-import { isAdminMiddleware } from './middleware'; 
+import { isAdminMiddleware } from './routes/middleware'; 
 
 const app = express();
 const port = process.env.PORT || 3000;
