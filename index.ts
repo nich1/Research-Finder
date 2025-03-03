@@ -5,15 +5,17 @@ import assistantRoutes from './routes/assistantRoutes';
 import postRoutes from './routes/postRoutes';
 import applicationRoutes from './routes/applicationRoutes';
 import searchRoutes from './routes/searchRoutes';
+import adminRoutes from './routes/adminRoutes';
+import { isAdmin } from './routes/middleware';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Enable CORS for all routes
 app.use(cors({
-  origin: ['https://research-finder-1000.web.app', 'http://localhost:5173'], // Replace with your front-end's domain
-  methods: 'GET,POST,PUT,DELETE', // Customize as needed
-  credentials: true    // Enable this if you need to include cookies
+  origin: ['https://research-finder-1000.web.app', 'http://localhost:5173'], 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  credentials: true    
 }));
 
 // Middleware to parse JSON bodies
@@ -31,9 +33,12 @@ app.use('', postRoutes);
 app.use('', searchRoutes);
 app.use('', applicationRoutes);
 
+// ✅ Admin Routes (Protected with isAdmin Middleware)
+app.use('/admin', isAdmin, adminRoutes);
+
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`🚀 Server is running on port ${port}`);
 });
 
 export default app;
