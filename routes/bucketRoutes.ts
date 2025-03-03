@@ -35,4 +35,27 @@ router.post("/upload-profile", upload.single("image"), async (req: Request, res:
   }
 });
 
+// 🔹 Get Profile Picture
+router.get("/profile-picture/:fileName", async (req: Request, res: Response) => {
+  try {
+    const { fileName } = req.params;
+    if (!fileName) {
+      return res.status(400).json({ error: "File name is required" });
+    }
+
+    const file = bucket.file(`profile_pictures/${fileName}`);
+
+    // Check if file exists
+    const [exists] = await file.exists();
+    if (!exists) {
+      return res.status(404).json({ error: "Profile picture not found" });
+    }
+
+    const publicUrl = `https://storage.googleapis.com/${bucket.name}/profile_pictures/${fileName}`;
+    res.status(200).json({ imageUrl: publicUrl });
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
 export default router;
