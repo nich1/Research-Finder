@@ -51,4 +51,3 @@ router.post("/approve-post/:postId", isAdmin, async (req: Request, res: Response
     res.status(500).json({ error: "Failed to approve post" });
   }
 });
-
