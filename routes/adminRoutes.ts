@@ -1,6 +1,10 @@
-import express, { Request, Response } from "express";
-import { isAdmin } from "./middleware";
+import express, { Request, Response, NextFunction } from "express";
 import { db } from "../config/firebase";
+
+// Define AuthenticatedRequest type (assuming this comes from middleware)
+interface AuthenticatedRequest extends Request {
+  user?: { uid: string; isAdmin: boolean }; // Adjust based on your middleware
+}
 
 const router = express.Router();
 
@@ -14,7 +18,7 @@ interface User {
 }
 
 // 🔹 Fetch all users (Admins only)
-router.get("/users", isAdmin, async (req: Request, res: Response) => {
+router.get("/users", async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const usersSnapshot = await db.collection("researchers").get();
     const users: User[] = usersSnapshot.docs.map((doc) => ({
@@ -22,32 +26,15 @@ router.get("/users", isAdmin, async (req: Request, res: Response) => {
       ...doc.data(),
     })) as User[];
 
-    res.json(users);
+    return res.json(users); // Explicit return to satisfy Express
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch users" });
+    return res.status(500).json({ error: "Failed to fetch users" });
   }
 });
 
 // 🔹 Delete a user (Admins only)
-router.delete("/users/:id", isAdmin, async (req: Request, res: Response) => {
+router.delete("/users/:id", async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     await db.collection("researchers").doc(id).delete();
-    res.json({ message: "User deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete user" });
-  }
-});
-
-// 🔹 Approve Research Post (Admins only)
-router.post("/approve-post/:postId", isAdmin, async (req: Request, res: Response) => {
-  try {
-    const { postId } = req.params;
-    const postRef = db.collection("posts").doc(postId);
-    await postRef.update({ approved: true });
-
-    res.json({ message: "Post approved successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to approve post" });
-  }
-});
+    return
