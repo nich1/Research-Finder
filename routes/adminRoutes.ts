@@ -1,9 +1,9 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
 import { db } from "../config/firebase";
 
-// Define AuthenticatedRequest type (assuming this comes from middleware)
+// Define AuthenticatedRequest type
 interface AuthenticatedRequest extends Request {
-  user?: { uid: string; isAdmin: boolean }; // Adjust based on your middleware
+  user?: { uid: string; isAdmin: boolean };
 }
 
 const router = express.Router();
@@ -17,24 +17,41 @@ interface User {
   isAdmin: boolean;
 }
 
-// 🔹 Fetch all users (Admins only)
-router.get("/users", async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+// Fetch all users (Admins only)
+router.get("/users", async (req: AuthenticatedRequest, res: Response) => {
   try {
     const usersSnapshot = await db.collection("researchers").get();
     const users: User[] = usersSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as User[];
-
-    return res.json(users); // Explicit return to satisfy Express
+    res.json(users);
   } catch (error) {
-    return res.status(500).json({ error: "Failed to fetch users" });
+    res.status(500).json({ error: "Failed to fetch users" });
   }
 });
 
-// 🔹 Delete a user (Admins only)
-router.delete("/users/:id", async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+// Delete a user (Admins only)
+router.delete("/users/:id", async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
     await db.collection("researchers").doc(id).delete();
-    return
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete user" });
+  }
+});
+
+// Approve Research Post (Admins only)
+router.post("/approve-post/:postId", async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { postId } = req.params;
+    const postRef = db.collection("posts").doc(postId);
+    await postRef.update({ approved: true });
+    res.json({ message: "Post approved successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to approve post" });
+  }
+});
+
+export default router;

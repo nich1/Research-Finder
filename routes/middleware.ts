@@ -3,7 +3,7 @@ import { db } from "../config/firebase";
 
 // Extend Express Request to include user object
 interface AuthenticatedRequest extends Request {
-  user?: { uid: string };
+  user?: { uid: string; isAdmin: boolean };
 }
 
 // Middleware to verify if a user is an admin
@@ -23,7 +23,7 @@ export const isAdmin = async (req: AuthenticatedRequest, res: Response, next: Ne
       return res.status(403).json({ error: "Forbidden - Admin access required" });
     }
 
-    next(); // ✅ Allow access to admin routes
+    next(); // Proceed to the next middleware or route handler
   } catch (error) {
     res.status(500).json({ error: "Server error verifying admin access" });
   }

@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import cors from "cors"; // Use import instead of require
+import cors from "cors";
 import researcherRoutes from "./routes/researcherRoutes";
 import assistantRoutes from "./routes/assistantRoutes";
 import postRoutes from "./routes/postRoutes";
