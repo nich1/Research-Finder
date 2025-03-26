@@ -38,6 +38,7 @@ const UserPage = () => {
             messagesCollection,
             where('userID', '==', user.uid) // Filter messages by user ID
           );
+           console.log("made it!");
           const querySnapshot = await getDocs(userMessagesQuery); // Fetch documents
           const messagesData = querySnapshot.docs.map((doc) => ({
             id: doc.id,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../config/firebase';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import './Auth.css';
 
 const SignIn = () => {
@@ -42,56 +42,38 @@ const SignIn = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const payload = {
-        userEmail: user.email,
-        provider: 'google',
-        signInDate: new Date().toISOString(),
-        userID: user.uid,
-      };
-
-      const response = await fetch(`${BACKEND_URL}/signin`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        setMessage(`Welcome, ${user.displayName}! Redirecting...`);
-        setTimeout(() => navigate('/'), 3000);
-      } else {
-        throw new Error('Failed to sign in with Google.');
-      }
-    } catch (error) {
-      setMessage(`Error: ${error.message}`);
-    }
-  };
-
   return (
     <div className="auth-container">
       <div className="auth-card">
         <h2>Sign In</h2>
         <p>Welcome back! Please sign in to continue.</p>
 
-        <button className="auth-google-button" onClick={handleGoogleSignIn}>
-          <img src="/assets/google-icon.png" alt="Google icon" className="google-icon" />
-          Sign In with Google
+        <input
+          type="email"
+          placeholder="Email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button className="auth-submit-button" onClick={handleSignIn}>
+          Sign In
         </button>
-        <div className="auth-divider"><span>or</span></div>
-        
-        <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button className="auth-submit-button" onClick={handleSignIn}>Sign In</button>
 
         <p className="auth-message">{message}</p>
 
-        <p className="auth-toggle">Don't have an account? <a href="/register">Register</a></p>
-        <button className="auth-return-home" onClick={() => navigate('/')}>Return to Home Page</button>
+        <p className="auth-toggle">
+          Don't have an account? <a href="/register">Register</a>
+        </p>
+        <button className="auth-return-home" onClick={() => navigate('/')}>
+          Return to Home Page
+        </button>
       </div>
     </div>
   );
