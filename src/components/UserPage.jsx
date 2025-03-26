@@ -52,7 +52,8 @@ const UserPage = () => {
         }
       };
 
-      fetchMessages();
+        fetchMessages();
+        console.log("we be here");
     }
   }, [user]);
 
