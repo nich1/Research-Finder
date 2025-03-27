@@ -37,8 +37,6 @@ router.get('/search/messages', async (req: Request, res: Response) => {
       id: doc.id,
       ...doc.data(),
     }));
-
-    console.log(`Messages found: ${messages.length}`);
     
     // Send the response
     res.status(200).json(messages);
