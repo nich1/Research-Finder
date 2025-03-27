@@ -4,6 +4,8 @@ import { auth } from '../config/firebase'; // Import Firebase Auth instance
 import { db } from '../config/firebase'; // Import Firestore database instance
 import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore functions
 import { Link } from 'react-router-dom'; // Import Link from React Router
+import { doc, getDoc } from 'firebase/firestore';
+
 
 const UserPage = () => {
   const [user, setUser] = useState(null); // State for current user
@@ -12,17 +14,31 @@ const UserPage = () => {
   const [error, setError] = useState(null); // Error state
 
   useEffect(() => {
-    // Fetch current user information from Firebase Auth
     const currentUser = auth.currentUser;
-    if (currentUser) {
-      setUser({
-        email: currentUser.email,
-        uid: currentUser.uid,
-        creationTime: currentUser.metadata.creationTime,
-      });
-    } else {
-      setUser(null);
-    }
+  
+    const fetchUserData = async () => {
+      if (currentUser) {
+        const userBaseData = {
+          email: currentUser.email,
+          uid: currentUser.uid,
+          creationTime: currentUser.metadata.creationTime,
+        };
+  
+        // Check both collections (assistant/researcher)
+        const researcherRef = doc(db, 'researchers', currentUser.uid);
+        const researcherSnap = await getDoc(researcherRef);
+  
+        const finalUser = researcherSnap.exists()
+          ? { ...userBaseData, role: 'researcher' }
+          : { ...userBaseData, role: 'assistant' };
+  
+        setUser(finalUser);
+      } else {
+        setUser(null);
+      }
+    };
+  
+    fetchUserData();
   }, []);
 
   useEffect(() => {
@@ -53,7 +69,8 @@ const UserPage = () => {
         }
       };
 
-      fetchMessages();
+        fetchMessages();
+        console.log("we be here");
     }
   }, [user]);
 
@@ -67,12 +84,14 @@ const UserPage = () => {
             <p>Email: {user.email}</p>
             <p>Member since: {new Date(user.creationTime).toDateString()}</p>
           </section>
-          <section className="user-actions">
-            <h2>Actions</h2>
-            <Link to="/AddPostForm" className="action-link">
-  Add a New Post
-</Link>
-          </section>
+          {user.role === 'researcher' && (
+  <section className="user-actions">
+    <h2>Actions</h2>
+    <Link to="/AddPostForm" className="action-link">
+      Add a New Post
+    </Link>
+  </section>
+)}
           <section className="user-inbox">
             <h2>Inbox</h2>
             {loading && <p>Loading messages...</p>}
