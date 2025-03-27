@@ -60,6 +60,8 @@ const UserPage = () => {
             id: doc.id,
             ...doc.data(),
           }));
+
+          console.log(`Messages found: ${messagesData.length}`);
           setMessages(messagesData); // Update state with messages
         } catch (err) {
           console.error('Error fetching messages:', err);
