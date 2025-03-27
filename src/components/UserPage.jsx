@@ -81,6 +81,7 @@ const UserPage = () => {
       {user ? (
         <>
           <h1>Welcome, {user.email}</h1>
+          <p className="user-role">You are signed in as a <strong>{user.role}</strong>.</p>
           <section className="user-info">
             <h2>Your Information</h2>
             <p>Email: {user.email}</p>
