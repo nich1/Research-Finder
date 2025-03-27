@@ -75,6 +75,8 @@ const UserPage = () => {
   }, [user]);
 
   return (
+    <div className="page-content">
+  
     <div className="user-page">
       {user ? (
         <>
@@ -116,6 +118,7 @@ const UserPage = () => {
       ) : (
         <p>Please sign in to view your account details.</p>
       )}
+    </div>
     </div>
   );
 };
