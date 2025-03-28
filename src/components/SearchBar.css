@@ -1,22 +1,22 @@
 /* Updated CSS for Search Bar */
 
 .search-button {
-
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #2E8B57; /* UNT-style green */
+  color: white;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
-  width: 40px;
-  padding-right: 40px;
-
+  margin-left: 8px;
+  transition: background-color 0.3s ease;
 }
 
-.search-icon {
-  width: 28px;  /* Adjust size as needed */
-  height: 28px;
-}
 
 .search-bar {
   width: 85%; /* Larger width */
-  max-width: 750px; /* Increased max width */
+  max-width: 1550px; /* Increased max width */
   padding: 14px; /* Bigger padding for better UX */
   font-size: 20px; /* Larger font size */
   border: 2px solid #ccc;
@@ -32,13 +32,22 @@
 .search-container {
   display: flex;
   align-items: center;
-
-    width: 100%;
-    max-width: 500px;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 
 
 
+
+.search-button:hover {
+  background-color: #1f5f3c; /* Darker green on hover */
+}
+
+.search-icon {
+  display: none; /* Optional: hide icon if still in CSS */
+}
 
 

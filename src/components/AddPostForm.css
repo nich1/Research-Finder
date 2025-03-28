@@ -1,5 +1,6 @@
 /* Center the form and add styling */
 form {
+  
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
@@ -21,7 +22,9 @@ form {
     font-size: 16px;
     box-sizing: border-box;
   }
-  
+  .form-wrapper {
+    padding-top: 120px; /* or margin-top: 120px; */
+  }
   /* Placeholder styling */
   input::placeholder,
   textarea::placeholder {
@@ -73,4 +76,13 @@ form {
     resize: vertical;
     min-height: 100px;
   }
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
   
+  label input,
+  label textarea {
+    margin-top: 5px;
+  }

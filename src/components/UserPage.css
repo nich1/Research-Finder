@@ -1,3 +1,6 @@
+.page-content {
+  padding-top: 100px; /* Ensure full spacing below fixed header */
+}
 .user-page {
     padding: 20px;
     max-width: 800px;
