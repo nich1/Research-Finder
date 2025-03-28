@@ -5,8 +5,7 @@ import assistantRoutes from "./routes/assistantRoutes";
 import postRoutes from "./routes/postRoutes";
 import applicationRoutes from "./routes/applicationRoutes";
 import searchRoutes from "./routes/searchRoutes";
-import adminRoutes from "./routes/adminRoutes";
-import { isAdmin } from "./routes/middleware";
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -34,9 +33,6 @@ app.use("/assistants", assistantRoutes);
 app.use("/posts", postRoutes);
 app.use("/search", searchRoutes);
 app.use("/applications", applicationRoutes);
-
-// Admin Routes (Protected with isAdmin Middleware)
-app.use("/admin", isAdmin, adminRoutes);
 
 // Start the server
 app.listen(port, () => {
