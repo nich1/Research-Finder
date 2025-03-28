@@ -62,6 +62,20 @@ const UserPage = () => {
           }));
 
           console.log(`Messages found: ${messagesData.length}`);
+
+          if (messagesData.length === 0) 
+          {
+              messagesData = 
+              [
+              { id: 'spoof1', sender: 'Dr. AI', text: 'Welcome to the research network!', timestamp: Date.now() },
+              { id: 'spoof2', sender: 'Admin', text: 'Remember to check your updates.', timestamp: Date.now() - 500000 },
+              { id: 'spoof3', sender: 'Colleague', text: 'Did you review my paper draft?', timestamp: Date.now() - 1000000 },
+              ];
+            console.log("Added spoof messages.");
+          }
+
+
+          
           setMessages(messagesData); // Update state with messages
         } catch (err) {
           console.error('Error fetching messages:', err);
