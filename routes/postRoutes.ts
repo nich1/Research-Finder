@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express';
 import { admin, db } from '../config/firebase';
 
+
 const router = express.Router();
 
-// GET request to fetch all posts (changed from '/posts' to '/')
-router.get('/', async (req: Request, res: Response) => {
+// GET request to fetch all posts
+router.get('/posts', async (req: Request, res: Response) => {
   try {
     const postsCollection = db.collection('posts');
     const snapshot = await postsCollection.get();
@@ -40,12 +41,14 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
 
   let expirationTimestamp: admin.firestore.Timestamp;
   try {
+    // Use admin.firestore.Timestamp
     expirationTimestamp = admin.firestore.Timestamp.fromDate(new Date(expirationDate));
   } catch (error) {
     return res.status(400).json({ error: 'Invalid expirationDate format. It must be a valid ISO string.' });
   }
 
   try {
+    // Validate researcher existence
     const researcherRef = db.collection('researchers').doc(researcherID);
     const researcherDoc = await researcherRef.get();
 
@@ -53,6 +56,7 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
       return res.status(404).json({ message: 'Researcher ID not found.' });
     }
 
+    // Prepare research data
     const researchData = {
       title,
       body,
@@ -67,12 +71,15 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
 
     console.log('Saving research data:', researchData);
 
+    // Save data to Firestore
     const docRef = db.collection('posts').doc();
     await docRef.set(researchData);
 
+    // Update the researcher's posts array
     await researcherRef.update({
       posts: admin.firestore.FieldValue.arrayUnion(docRef.id),
     });
+    
 
     res.status(201).json({ message: 'Research data added successfully', data: researchData, id: docRef.id });
   } catch (error) {
@@ -82,3 +89,4 @@ router.post('/researcher/:researcherID/posts', async (req: Request, res: Respons
 });
 
 export default router;
+
