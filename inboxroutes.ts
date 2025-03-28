@@ -37,7 +37,7 @@ router.get('/search/messages', async (req: Request, res: Response) => {
       id: doc.id,
       ...doc.data(),
     }));
-
+    
     // Send the response
     res.status(200).json(messages);
   } catch (error) {
