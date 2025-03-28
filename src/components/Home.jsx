@@ -33,7 +33,7 @@ function Home() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch('https://research-finder-server.vercel.app/api/posts');
+        const response = await fetch('https://research-finder-server.vercel.app/posts');
 
 
         if (!response.ok) {
