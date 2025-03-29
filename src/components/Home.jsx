@@ -5,11 +5,24 @@ import Feed from './Feed';
 
 // Filter posts based on selected filters
 const filterPosts = (filters, posts) => {
-  if (filters.length === 0) return posts; // No filters, show all posts
-  return posts.filter((post) =>
-    filters.every((filter) => post.body.toLowerCase().includes(filter.toLowerCase()))
-  );
+  if (filters.length === 0) return posts;
+
+  return posts.filter((post) => {
+    const searchableFields = [
+      post.department,
+      post.researchType,
+      post.workType,
+      post.body,
+    ]
+      .filter(Boolean)
+      .map((val) => val.toLowerCase());
+
+    return filters.every((filter) =>
+      searchableFields.some((val) => val.includes(filter.toLowerCase()))
+    );
+  });
 };
+
 const groupedFilters = {
   Department: ['Biology', 'Computer Science'],
   'Research Type': ['Field Work', 'AI'],
@@ -22,12 +35,12 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const filters = [
-    { label: 'Department', value: 'department' },
-    { label: 'Research Type', value: 'researchType' },
-    { label: 'Location', value: 'location' },
-  ];
-
+  const groupedFilters = {
+    Department: ['Biology', 'Computer Science'],
+    ResearchType: ['Field Work', 'AI'],
+    'Work Type': ['Remote', 'In-Person'], 
+  };
+  
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
