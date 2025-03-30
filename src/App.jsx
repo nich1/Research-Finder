@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import AddPostForm from './components/AddPostForm';
 import AdminDashboard from './components/AdminDashboard';
 import Terms from './components/Terms';
+import Apply from './components/Apply'; 
 
 import { auth, db } from './config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
@@ -105,6 +106,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+  path="/apply/:id"
+  element={
+    <ProtectedRoute user={user}>
+      <Apply assistantId={user?.uid} />
+    </ProtectedRoute>
+  }
+/>
             <Route
               path="/AddPostForm"
               element={

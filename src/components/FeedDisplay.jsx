@@ -1,14 +1,11 @@
 import React from 'react';
 import './FeedDisplay.css';
+import { Link } from 'react-router-dom'; // <-- Make sure this is imported
 
 const FeedDisplay = ({ data }) => {
-  console.log('FeedDisplay received data:', data); // Debugging
+  if (!data) return <p>No data available.</p>;
 
-  if (!data) {
-    return <p>No data available.</p>;
-  }
-
-  const { title, body, compensation, organization, researcherName, workType } = data;
+  const { id, title, body, compensation, organization, researcherName, workType } = data;
 
   return (
     <div className="feed-display-card">
@@ -18,6 +15,10 @@ const FeedDisplay = ({ data }) => {
       <p><strong>Organization:</strong> {organization || 'Unknown'}</p>
       <p><strong>Researcher:</strong> {researcherName || 'Unknown'}</p>
       <p><strong>Work Type:</strong> {workType || 'Not specified'}</p>
+
+      <Link to={`/apply/${id}`}>
+        <button className="apply-button">Apply</button>
+      </Link>
     </div>
   );
 };

@@ -36,9 +36,12 @@ const AddPostForm = ({ researcherID }) => {
 
     try {
       const response = await axios.post(
-        `https://research-finder-server.vercel.app/researcher/${researcherID}/posts`,
-        formData
-      );
+        `https://research-finder-server.vercel.app/posts`,
+        {
+          researcherID,  // now passed in the body, not in the URL
+          ...formData
+        }
+      )
 
       setSuccess('Post added successfully!');
       setFormData({
