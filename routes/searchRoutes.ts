@@ -6,7 +6,7 @@ import { Post, WorkType } from '../models/interfaces';
 const router = express.Router();
 
 // Route to search for posts by title, organization, or keywords in body
-router.get('/search/posts', async (req: Request, res: Response) => {
+router.get('/posts', async (req: Request, res: Response) => {
   const searchString = req.query.q as string | undefined; // Allow undefined
 
   try {
