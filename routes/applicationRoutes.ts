@@ -7,7 +7,7 @@ import { App } from 'firebase-admin/app';
 const router = express.Router();
 
 // Route to submit an application
-router.post('/applications', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
     const { assistantId, postId, message } = req.body;
 
@@ -85,7 +85,7 @@ router.post('/applications', async (req: Request, res: Response) => {
 });
 
 // Route to get the message of an application by applicationId
-router.get('/applications/message/:applicationId', async (req: Request, res: Response) => {
+router.get('/message/:applicationId', async (req: Request, res: Response) => {
   try {
     const { applicationId } = req.params;
 
@@ -122,7 +122,7 @@ router.get('/applications/message/:applicationId', async (req: Request, res: Res
 
 
 // Route to update application status
-router.put('/applications/status', async (req: Request, res: Response) => {
+router.put('/status', async (req: Request, res: Response) => {
   try {
     const { applicationId, status } = req.body;
 
