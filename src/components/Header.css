@@ -1,41 +1,104 @@
+/* Full-width header */
 .home-header {
+  width: 100vw; /* Ensure the header spans the entire width */
+  max-width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: #004d00;
+  padding: 15px 20px;
+  background-color: #004d00; /* UNT Green */
   color: white;
+  box-sizing: border-box; /* Prevents padding from affecting width */
 }
 
-.logo {
-  flex-shrink: 0; /* Prevent the logo from shrinking */
-  margin-right: 20px; /* Add space between the logo and search bar */
+/* Ensure logo link is properly aligned */
+.home-header h1 {
+  margin: 0;
+  font-size: 24px;
 }
 
-.header-buttons .btn {
-  min-width: 100px; /* Ensures all buttons have the same width */
-  height: 40px; /* Ensures all buttons have the same height */
-  font-size: 16px; /* Ensures text is the same size */
+.home-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.home-link:hover {
+  text-decoration: underline;
+}
+
+/* Search bar container */
+.search-container {
+  flex-grow: 1; /* Allow the search bar to take up available space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 20px;
+  width: 40%;
+}
+
+/* Search input */
+.search-bar {
+  border: none;
+  outline: none;
+  padding: 8px;
+  flex-grow: 1;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+/* Search button */
+.search-button {
+  background-color: #0055FF;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-button img {
+  width: 16px;
+  height: 16px;
+}
+
+/* User and button area */
+.header-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Ensure buttons are uniform */
+.btn {
+  min-width: 100px;
+  height: 40px;
+  font-size: 16px;
   text-align: center;
-  border: 2px solid transparent; /* Ensures equal border thickness */
-  border-radius: 5px; /* Consistent rounded corners */
+  border-radius: 5px;
   background-color: #2E8B57; /* UNT Green */
   color: white;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  border: none;
+  white-space: nowrap;
+  padding: 8px 12px;
 }
 
-
-
-/* If the "Home" button has extra styling, reset it */
-.header-buttons .home-button {
-  border: 2px solid transparent; /* Removes outline difference */
+.btn:hover {
+  background-color: #006600;
 }
 
-/* Ensure buttons are displayed inline properly */
-.header-buttons {
-  display: flex;
-  gap: 10px; /* Adds space between buttons */
-  align-items: center;
+/* User email styling */
+.user-email {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Fix header on top of the screen */
+.home-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }

@@ -26,17 +26,12 @@ function Header({ user, onSignOut }) {
 
   return (
     <header className="home-header">
-      <h1>Research Finder App</h1>
+      <h1>
+        <a href="/" className="home-link">Research Finder App</a>
+      </h1>
       <SearchBar onSearch={handleSearch} /> {/* Primary SearchBar */}
 
       <div className="header-buttons">
-        <button
-          className="btn home-button"
-          onClick={() => navigate('/')}
-        >
-          Home
-        </button>
-
         {/* Conditionally Render Buttons Based on Auth State */}
         {user ? (
           <>

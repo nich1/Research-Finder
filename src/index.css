@@ -14,38 +14,59 @@
   --button-bg: #0055FF;
   --button-hover: #0033AA;
   --text-light: #FFFFFF;
+  --green-bg: #004d00; /* Dark green for header/footer */
+  --white-bg: #FFFFFF;
 }
 
 /* Improve default text readability */
 body {
   font-size: 16px;
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
+  margin: 0; /* Remove unwanted margins */
+  padding: 0; /* Remove padding */
   color: #111; /* High contrast */
   background-color: #F2F2F2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Ensure all text is legible */
-h1, h2, h3, h4, h5, h6 {
-  color: black;
+/* ✅ Full-width header */
+.home-header {
+  width: 100%;
+  background-color: var(--green-bg);
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  box-sizing: border-box;
+}
+
+/* Fix header logo */
+.home-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* Ensure links are readable */
+.home-header a {
+  color: var(--text-light);
+  text-decoration: none;
   font-weight: bold;
 }
 
-/* Make links clear and always visible */
-a {
-  font-weight: 600;
-  color: var(--primary-color);
-  text-decoration: underline;
-  transition: all 0.3s ease-in-out;
-}
-
-a:hover {
+.home-header a:hover {
   color: var(--secondary-color);
-  text-decoration: underline;
 }
 
-/* Buttons with improved accessibility */
+/* ✅ Search Bar Alignment */
+.search-container {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 20px;
+}
+
+/* ✅ Button Fixes */
 button {
   background: var(--button-bg);
   color: var(--text-light);
@@ -61,36 +82,62 @@ button:hover {
   background: var(--button-hover);
 }
 
-/* Add focus outlines for better keyboard navigation */
-button:focus, a:focus, input:focus, textarea:focus {
-  outline: 3px solid var(--secondary-color);
-}
-
-/* Improve form inputs */
-input, textarea {
+/* ✅ Ensure Footer Spans Full Width */
+.footer {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #888;
-  border-radius: 5px;
-  background-color: #FFF;
-  color: #111;
+  background-color: var(--green-bg);
+  color: var(--text-light);
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  bottom: 0;
+  margin-top: auto;
 }
 
-input:focus, textarea:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 5px var(--primary-color);
+/* ✅ Improve Footer Links */
+.footer a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 10px;
 }
 
-/* Responsive Design */
+.footer a:hover {
+  color: var(--secondary-color);
+}
+
+/* ✅ Improve layout structure */
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* ✅ Fix Filter Box Layout */
+.filters {
+  width: 250px;
+  background: var(--white-bg);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Responsive Design */
 @media (max-width: 768px) {
   body {
       font-size: 14px;
+  }
+
+  .home-header {
+      flex-direction: column;
+      text-align: center;
+  }
+
+  .search-container {
+      margin: 10px auto;
+      max-width: 90%;
+  }
+
+  .footer {
       padding: 15px;
   }
-
-  button {
-      width: 100%;
-  }
 }
-
-/* Force Git to detect changes */

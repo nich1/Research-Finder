@@ -52,9 +52,9 @@ const SearchBar = ({ onSearch }) => {
           onKeyDown={handleKeyDown} // Trigger search on Enter
           aria-label="Search for posts"
                 />
-        <button className="search-button" onClick={handleSearch}>
-          <img src={searchIcon} alt="Search" className='search-icon'/>
-        </button>
+       <button className="search-button" onClick={handleSearch}>
+  Search
+</button>
       </div>
    
   );

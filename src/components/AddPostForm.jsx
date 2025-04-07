@@ -12,9 +12,10 @@ const AddPostForm = ({ researcherID }) => {
     approvalMessage: '',
     expirationDate: '',
   });
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(null); // Error state
-  const [success, setSuccess] = useState(null); // Success state
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,11 +36,13 @@ const AddPostForm = ({ researcherID }) => {
 
     try {
       const response = await axios.post(
-        `https://research-finder-server.vercel.app/researcher/${researcherID}/posts`,
-        formData
-      );
-      
-      console.log('Post added successfully:', response.data);
+        'https://research-finder-server.vercel.app/posts/researcher/00hCu4Mle5HZxO3nW8iD/posts',
+        {
+          researcherID,  // now passed in the body, not in the URL
+          ...formData
+        }
+      )
+
       setSuccess('Post added successfully!');
       setFormData({
         title: '',
@@ -49,7 +52,7 @@ const AddPostForm = ({ researcherID }) => {
         workType: '',
         approvalMessage: '',
         expirationDate: '',
-      }); // Reset form after success
+      });
     } catch (error) {
       console.error('Error adding post:', error.response || error.message);
       setError(error.response?.data?.message || 'Failed to add post. Please try again.');
@@ -59,67 +62,93 @@ const AddPostForm = ({ researcherID }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: '600px', margin: '0 auto' }}>
+     <div className="form-wrapper">
+    
+ 
+    <form onSubmit={handleSubmit} style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '15px' }}>
       {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
       {success && <p style={{ color: 'green', fontWeight: 'bold' }}>{success}</p>}
-      
-      <input
-        type="text"
-        name="title"
-        placeholder="Title"
-        value={formData.title}
-        onChange={handleChange}
-        required
-      />
-      <textarea
-        name="body"
-        placeholder="Body"
-        value={formData.body}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="organization"
-        placeholder="Organization"
-        value={formData.organization}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="compensation"
-        placeholder="Compensation"
-        value={formData.compensation}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="workType"
-        placeholder="Work Type (e.g., remote, on-site)"
-        value={formData.workType}
-        onChange={handleChange}
-        required
-      />
-      <textarea
-        name="approvalMessage"
-        placeholder="Approval Message"
-        value={formData.approvalMessage}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="date"
-        name="expirationDate"
-        value={formData.expirationDate}
-        onChange={handleChange}
-        required
-      />
+
+      <label>
+        What's the title of your research post?
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
+      <label>
+        Could you describe the research opportunity?
+        <textarea
+          name="body"
+          value={formData.body}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
+      <label>
+        What organization is this affiliated with?
+        <input
+          type="text"
+          name="organization"
+          value={formData.organization}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
+      <label>
+        Is there any compensation offered?
+        <input
+          type="text"
+          name="compensation"
+          value={formData.compensation}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
+      <label>
+        What kind of work is this? (e.g., remote, on-site)
+        <input
+          type="text"
+          name="workType"
+          value={formData.workType}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
+      <label>
+        What message should be sent to the student upon approval?
+        <textarea
+          name="approvalMessage"
+          value={formData.approvalMessage}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
+      <label>
+        When should this opportunity expire?
+        <input
+          type="date"
+          name="expirationDate"
+          value={formData.expirationDate}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
       <button type="submit" disabled={loading}>
         {loading ? 'Submitting...' : 'Add Post'}
       </button>
     </form>
+    </div>
   );
 };
 
