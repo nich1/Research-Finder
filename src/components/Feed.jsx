@@ -10,7 +10,7 @@ function Feed({ posts }) {
       ) : (
         <div className="feed-list">
           {posts.map((post) => (
-            <FeedDisplay key={post.id} data={post} />
+            <FeedDisplay key={post.id} data={post} className="post-card" />
           ))}
         </div>
       )}
