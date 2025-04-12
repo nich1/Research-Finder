@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './SearchResults.css';
+import { Link } from 'react-router-dom';
+
+
 
 const SearchResults = () => {
   const location = useLocation();
@@ -9,6 +12,8 @@ const SearchResults = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -48,15 +53,24 @@ return (
       <p style={{ color: 'red' }}>{error}</p>
     ) : results.length > 0 ? (
       <ul className="search-results-list">
-        {results.map((result) => (
-          <li key={result.id} className="search-result-item">
-            <h3>{result.title || 'No Title Available'}</h3>
-            <p>{result.body || 'No Description Available'}</p>
-            <p><strong>Organization:</strong> {result.organization || 'N/A'}</p>
-            <p><strong>Work Type:</strong> {result.workType || 'N/A'}</p>
-          </li>
-        ))}
-      </ul>
+  {results.map((result) => (
+    <li key={result.id} className="search-result-item">
+      <h3>{result.title || 'No Title Available'}</h3>
+      <p>{result.body || 'No Description Available'}</p>
+      <p><strong>Compensation:</strong> {result.compensation || 'N/A'}</p>
+      <p><strong>Organization:</strong> {result.organization || 'N/A'}</p>
+      <p><strong>Researcher:</strong> {result.researcher || 'Unknown'}</p>
+      <p><strong>Work Type:</strong> {result.workType || 'N/A'}</p>
+
+      {/* Wrap Apply Button in a Link */}
+      <Link to={`/apply/${result.id}`}>
+        <button className="apply-button">Apply</button>
+      </Link>
+    </li>
+  ))}
+</ul>
+
+
     ) : (
       <p>No results found.</p>
     )}
