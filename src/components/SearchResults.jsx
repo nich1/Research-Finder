@@ -1,6 +1,7 @@
 // SearchResults.jsx
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import './SearchResults.css';
 
 const SearchResults = () => {
   const location = useLocation();
@@ -38,29 +39,29 @@ const SearchResults = () => {
     }
   }, [query]);
 
-  return (
-    <div>
-      <h1>Search Results for "{query || ''}"</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p style={{ color: 'red' }}>{error}</p>
-      ) : results.length > 0 ? (
-        <ul>
-          {results.map((result) => (
-            <li key={result.id}>
-              <h3>{result.title || 'No Title Available'}</h3>
-              <p>{result.body || 'No Description Available'}</p>
-              <p><strong>Organization:</strong> {result.organization || 'N/A'}</p>
-              <p><strong>Work Type:</strong> {result.workType || 'N/A'}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No results found.</p>
-      )}
-    </div>
-  );
-};
+return (
+  <div className="search-results-container">
+    <h1>Search Results for "{query || ''}"</h1>
+    {loading ? (
+      <p>Loading...</p>
+    ) : error ? (
+      <p style={{ color: 'red' }}>{error}</p>
+    ) : results.length > 0 ? (
+      <ul className="search-results-list">
+        {results.map((result) => (
+          <li key={result.id} className="search-result-item">
+            <h3>{result.title || 'No Title Available'}</h3>
+            <p>{result.body || 'No Description Available'}</p>
+            <p><strong>Organization:</strong> {result.organization || 'N/A'}</p>
+            <p><strong>Work Type:</strong> {result.workType || 'N/A'}</p>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No results found.</p>
+    )}
+  </div>
+);
+}
 
 export default SearchResults;
