@@ -1,39 +1,27 @@
+// SearchBar.jsx
 import './SearchBar.css';
-import searchIcon from '../assets/search.png'
+import searchIcon from '../assets/search.png';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = () => {
   const [query, setQuery] = useState('');
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
-      setQuery(event.target.value);
-      console.log("Query Updated:", event.target.value);
+    setQuery(event.target.value);
   };
 
-    const handleSearch = async () => {
-        setQuery((prevQuery) => {
-            console.log("Using Latest Query:", prevQuery); // Debugging
-            if (!prevQuery.trim()) {
-                console.warn("Search query is empty, aborting search.");
-                return prevQuery;
-            }
+  const handleSearch = () => {
+    if (!query.trim()) {
+      console.warn("Search query is empty, aborting search.");
+      return;
+    }
 
-            onSearch([]); // Clear results before new search
+    // Navigate to search results page
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+  };
 
-            fetch(`https://research-finder-server.vercel.app/search/posts?q=${encodeURIComponent(prevQuery)}`)
-                .then((response) => {
-                    if (!response.ok) throw new Error("Failed to fetch search results");
-                    return response.json();
-                })
-                .then((results) => onSearch(results))
-                .catch((error) => console.error("Error searching posts:", error));
-            console.log("made it", response); // Debugging
-            return prevQuery;
-        });
-    };
-
-
-  // Handle search when Enter key is pressed
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       handleSearch();
@@ -41,22 +29,20 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-   
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search for posts..."
-          className="search-bar"
-          value={query}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown} // Trigger search on Enter
-          aria-label="Search for posts"
-                />
-       <button className="search-button" onClick={handleSearch}>
-  Search
-</button>
-      </div>
-   
+    <div className="search-container">
+      <input
+        type="text"
+        placeholder="Search for posts..."
+        className="search-bar"
+        value={query}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        aria-label="Search for posts"
+      />
+      <button className="search-button" onClick={handleSearch}>
+        Search
+      </button>
+    </div>
   );
 };
 

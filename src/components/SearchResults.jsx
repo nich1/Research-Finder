@@ -1,41 +1,42 @@
+// SearchResults.jsx
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const SearchResults = () => {
   const location = useLocation();
-  const query = new URLSearchParams(location.search).get('q'); // Match parameter name 'q'
+  const query = new URLSearchParams(location.search).get('q');
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false); // Add loading state
-  const [error, setError] = useState(null); // Add error state
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-  const fetchSearchResults = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(
-        `https://research-finder-server.vercel.app/search/posts?q=${encodeURIComponent(query)}`
-      );
+    const fetchSearchResults = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          `https://research-finder-server.vercel.app/search/posts?q=${encodeURIComponent(query)}`
+        );
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch search results: ${response.statusText}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch search results: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('Fetched search results:', data);
+        setResults(data);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+        setError(error.message || 'Failed to load search results. Please try again later.');
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data = await response.json();
-      console.log('Fetched search results:', data); // Debugging
-      setResults(data);
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-      setError(error.message || 'Failed to load search results. Please try again later.');
-    } finally {
-      setLoading(false);
+    if (query) {
+      fetchSearchResults();
     }
-  };
-
-  if (query) {
-    fetchSearchResults();
-  }
-}, [query]);
+  }, [query]);
 
   return (
     <div>
@@ -50,12 +51,8 @@ const SearchResults = () => {
             <li key={result.id}>
               <h3>{result.title || 'No Title Available'}</h3>
               <p>{result.body || 'No Description Available'}</p>
-              <p>
-                <strong>Organization:</strong> {result.organization || 'N/A'}
-              </p>
-              <p>
-                <strong>Work Type:</strong> {result.workType || 'N/A'}
-              </p>
+              <p><strong>Organization:</strong> {result.organization || 'N/A'}</p>
+              <p><strong>Work Type:</strong> {result.workType || 'N/A'}</p>
             </li>
           ))}
         </ul>
