@@ -16,6 +16,7 @@ import Apply from './components/Apply';
 import { auth, db } from './config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import './App.css';
 
 // ✅ Protect normal user pages
 const ProtectedRoute = ({ user, children }) => {

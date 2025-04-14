@@ -15,6 +15,8 @@
 .postings-container {
   width: 70%; /* Adjust based on layout preference */
   margin: 0 auto;
+  margin-top: 100px; /* Adjust this number as needed */
+  text-align: center;
 }
 
 h2 {
