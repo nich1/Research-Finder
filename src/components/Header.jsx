@@ -35,13 +35,15 @@ function Header({ user, onSignOut }) {
         {/* Conditionally Render Buttons Based on Auth State */}
         {user ? (
           <>
-            <span className="user-email">Welcome, {user.email}</span> {/* Show user email */}
-            <button
-              className="btn user-page-button"
-              onClick={() => navigate('/user')} // Navigate to User Page
-            >
-              User Page
-            </button>
+            <span 
+          className="user-email clickable-email" 
+          onClick={() => navigate('/user')} 
+        style={{ cursor: 'pointer', color: '#ffffcc', textDecoration: 'underline' }}
+      >
+    Welcome, {user.email}
+</span>
+           
+           
             <button
               className="btn sign-out-button"
               onClick={handleSignOut}
